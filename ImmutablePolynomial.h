@@ -6,89 +6,119 @@
 
 namespace groebner {
 
-template<class P>
+template <class P>
 class ImmutablePolynomial {
-  typedef typename P::CoefficientType C;
-  typedef typename P::MonomialType M;
-  typedef typename P::TermType T;
+    typedef typename P::CoefficientType C;
+    typedef typename P::MonomialType M;
+    typedef typename P::TermType T;
+
 public:
-  typedef typename P::CoefficientType CoefficientType;
-  typedef typename P::MonomialType MonomialType;
-  typedef typename P::TermType TermType;
-  typedef ImmutablePolynomial<P> This;
+    typedef typename P::CoefficientType CoefficientType;
+    typedef typename P::MonomialType MonomialType;
+    typedef typename P::TermType TermType;
+    typedef ImmutablePolynomial<P> This;
 
-  ImmutablePolynomial() : p() {}
-  ImmutablePolynomial(const C& c) : p(c) {}
-  ImmutablePolynomial(const T& t) : p(t) {}
-  ImmutablePolynomial(const P& p_) : p(p_) {}
-  T lterm() const { return p.lterm(); }
-  C lc() const { return p.lc(); }
-  M lm() const { return p.lm(); }
+    ImmutablePolynomial()
+        : p()
+    {
+    }
+    ImmutablePolynomial(const C& c)
+        : p(c)
+    {
+    }
+    ImmutablePolynomial(const T& t)
+        : p(t)
+    {
+    }
+    ImmutablePolynomial(const P& p_)
+        : p(p_)
+    {
+    }
+    T lterm() const { return p.lterm(); }
+    C lc() const { return p.lc(); }
+    M lm() const { return p.lm(); }
 
-  class TermIterator : public std::iterator<std::forward_iterator_tag, const T> {
-    typedef TermIterator This;
-    TermIterator(const typename P::TermIterator& it_) : it(it_) {}
-    friend This ImmutablePolynomial<P>::begin() const;
-    friend This ImmutablePolynomial<P>::end() const;
-  public:
-    This& operator++(int) { ++it; return *this; }
-    This operator++() { This r(*this); ++it; return r; }
-    bool operator==(const This& other) const { return it == other.it; }
-    bool operator!=(const This& other) const { return it != other.it; }
-    typename std::iterator<std::forward_iterator_tag, const T>::reference operator*() const { return it.operator*(); }
-    typename std::iterator<std::forward_iterator_tag, const T>::pointer operator->() const { return it.operator->(); }
-  private:
-    typename P::TermIterator it;
-  };
+    class TermIterator : public std::iterator<std::forward_iterator_tag, const T> {
+        typedef TermIterator This;
+        TermIterator(const typename P::TermIterator& it_)
+            : it(it_)
+        {
+        }
+        friend This ImmutablePolynomial<P>::begin() const;
+        friend This ImmutablePolynomial<P>::end() const;
 
-  TermIterator begin() const { return TermIterator(p.begin()); }
-  TermIterator end() const { return TermIterator(p.end()); }
+    public:
+        This& operator++(int)
+        {
+            ++it;
+            return *this;
+        }
+        This operator++()
+        {
+            This r(*this);
+            ++it;
+            return r;
+        }
+        bool operator==(const This& other) const { return it == other.it; }
+        bool operator!=(const This& other) const { return it != other.it; }
+        typename std::iterator<std::forward_iterator_tag, const T>::reference operator*() const { return it.operator*(); }
+        typename std::iterator<std::forward_iterator_tag, const T>::pointer operator->() const { return it.operator->(); }
 
-  C operator[](const M& m) const { return p[m]; }
-  bool isZero() const { return p.isZero(); }
-  This operator+(const C& c) const { return This(p + c); }
-  This operator-(const C& c) const { return This(p - c); }
-  This operator+(const T& t) const { return This(p + t); }
-  This operator-(const T& t) const { return This(p - t); }
-  static This combine(const This& a, const C& afactor, const This& b, const C& bfactor) {
-    return This(P::combine(a.p, afactor, b.p, bfactor));
-  }
-  static This combineAndRenormalize(const This& a, const C& afactor, const This& b, const C& bfactor) {
-    return This(P::combineAndRenormalize(a.p, afactor, b.p, bfactor));
-  }
-  This operator+(const This& other) const { return This(p + other); }
-  This operator-(const This& other) const { return This(p - other); }
+    private:
+        typename P::TermIterator it;
+    };
 
-  This operator-() const { return This(-p); }
-  This operator*(const C& c) const { return This(p * c); }
-  This operator*(const M& m) const { return This(p * m); }
-  This operator*(const T& t) const { return This(p * t); }
-  This operator*(const P& q) const { return This(p * q); }
-  This operator*(const This& other) const { return operator*(other.p); }
-  bool operator==(const This& other) const { return p == other.p; }
-  bool operator<(const This& other) const { return lm() < other.lm(); }
-  template<class T1>
-  friend std::ostream& operator<<(std::ostream& out, const ImmutablePolynomial<T1>& p);
+    TermIterator begin() const { return TermIterator(p.begin()); }
+    TermIterator end() const { return TermIterator(p.end()); }
+
+    C operator[](const M& m) const { return p[m]; }
+    bool isZero() const { return p.isZero(); }
+    This operator+(const C& c) const { return This(p + c); }
+    This operator-(const C& c) const { return This(p - c); }
+    This operator+(const T& t) const { return This(p + t); }
+    This operator-(const T& t) const { return This(p - t); }
+    static This combine(const This& a, const C& afactor, const This& b, const C& bfactor)
+    {
+        return This(P::combine(a.p, afactor, b.p, bfactor));
+    }
+    static This combineAndRenormalize(const This& a, const C& afactor, const This& b, const C& bfactor)
+    {
+        return This(P::combineAndRenormalize(a.p, afactor, b.p, bfactor));
+    }
+    This operator+(const This& other) const { return This(p + other); }
+    This operator-(const This& other) const { return This(p - other); }
+
+    This operator-() const { return This(-p); }
+    This operator*(const C& c) const { return This(p * c); }
+    This operator*(const M& m) const { return This(p * m); }
+    This operator*(const T& t) const { return This(p * t); }
+    This operator*(const P& q) const { return This(p * q); }
+    This operator*(const This& other) const { return operator*(other.p); }
+    bool operator==(const This& other) const { return p == other.p; }
+    bool operator<(const This& other) const { return lm() < other.lm(); }
+    template <class T1>
+    friend std::ostream& operator<<(std::ostream& out, const ImmutablePolynomial<T1>& p);
+
 private:
-  P p;
+    P p;
 };
 
-template<class P>
-std::ostream& operator<<(std::ostream& out, const ImmutablePolynomial<P>& p) {
-  return out << p.p;
+template <class P>
+std::ostream& operator<<(std::ostream& out, const ImmutablePolynomial<P>& p)
+{
+    return out << p.p;
 }
 
 } // namespace groebner
 
-
 namespace std {
-  template<typename P>
-  struct hash<groebner::ImmutablePolynomial<P> > {
-      size_t operator()(const groebner::ImmutablePolynomial<P>& ip) const {
-      return hash<P>()(ip.p);
+template <typename P>
+struct hash<groebner::ImmutablePolynomial<P>> {
+    size_t operator()(const groebner::ImmutablePolynomial<P>& ip) const
+    {
+        return hash<P>()(ip.p);
     }
-  };
+};
 }
 
 #endif // IMMUTABLE_POLYNOMIAL_H
-

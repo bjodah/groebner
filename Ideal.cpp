@@ -3,16 +3,23 @@
 #include "Ideal.h"
 #include "Monomial.h"
 
+
+namespace groebner {
+
 std::vector<std::string> var_names;
 
-void read_var_names(std::istream& in) {
-  std::string line;
-  getline(in, line);
-  boost::split(var_names, line, boost::is_any_of(","));
+void read_var_names(std::istream& in)
+{
+    std::string line;
+    getline(in, line);
+    boost::split(var_names, line, boost::is_any_of(","));
 }
 
-std::string var_name(uint index) {
-  if (index < var_names.size()) return var_names[index];
-  return groebner::default_get_var_name(index);
+std::string var_name(uint index)
+{
+    if (index < var_names.size())
+        return var_names[index];
+    return groebner::default_get_var_name(index);
 }
 
+}  // namespace groebner
