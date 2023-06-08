@@ -7,6 +7,7 @@
 #include "CachedMonomial.h"
 
 using namespace std;
+using namespace groebner;
 
 TEST(FGbTest, FGb) {
   use_abc_var_names in_this_scope;
@@ -52,4 +53,4 @@ TEST(FGbTest, hcyclic3) {
 
   EXPECT_EQ(vector<P>({a+b+c, pow(b, 2)+b*c+pow(c, 2), pow(c, 3)-pow(t, 3)}), output);
 }
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

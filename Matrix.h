@@ -1,8 +1,11 @@
+#pragma once
 #ifndef MATRIX_H
 #define MATRIX_H
 
 #include "debug.h"
 #include "Polynomial.h"
+
+namespace groebner {
 
 template<uint ROWS, uint COLS, class P = Polynomial<Term<int, Monomial<char> > > >
 struct CoefficientMatrix {
@@ -19,5 +22,7 @@ template<uint ROWS, uint COLS, class P = Polynomial<Term<int, Monomial<char> > >
 struct Dense : public CoefficientMatrix<ROWS, COLS, P> {
 };
 
+} // namespace groebner
+
 #endif // MATRIX_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

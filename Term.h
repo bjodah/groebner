@@ -1,3 +1,4 @@
+#pragma once
 #ifndef TERM_H
 #define TERM_H
 
@@ -5,6 +6,8 @@
 
 #include "style.h"
 #include "Monomial.h"
+
+namespace groebner {
 
 template<class C = int, class M = Monomial<char> >
 class Term {
@@ -136,5 +139,9 @@ std::istream& operator>>(std::istream& in, Term<C, M>& t) {
   return in;
 }
 
+
+} // namespace groebner
+
+
 #endif // TERM_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

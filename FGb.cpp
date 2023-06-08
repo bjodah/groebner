@@ -28,4 +28,4 @@ int main(int argc, char* argv[]) {
   }
   return 0;
 }
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

@@ -14,4 +14,4 @@ std::ostream& now(std::ostream& out) {
   return out << elapsed.total_milliseconds() << " ";
 }
 
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

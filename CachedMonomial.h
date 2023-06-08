@@ -1,9 +1,12 @@
+#pragma once
 #ifndef CACHED_MONOMIAL_H
 #define CACHED_MONOMIAL_H
 
 #include <deque>
 
 #include "Monomial.h"
+
+namespace groebner {
 
 template<class M>
 class CachedMonomial {
@@ -61,20 +64,6 @@ public:
 template<class M>
 std::deque<M> CachedMonomial<M>::cache = std::deque<M>();
 
-namespace std {
-  template<typename M>
-  struct hash<CachedMonomial<M> > {
-    size_t operator()(const CachedMonomial<M>& e) const {
-      size_t result = 0;
-      for (uint i = 0; i < M::VAR_COUNT; ++i) {
-        result *= 2147483647;
-        result += e[i];
-      }
-      return result;
-    }
-  };
-}
-
 template<class M>
 CachedMonomial<M> pow(const CachedMonomial<M>& m, uint e) {
   return CachedMonomial<M>(pow(m.m(), e));
@@ -96,6 +85,23 @@ std::istream& operator>>(std::istream& in, CachedMonomial<M>& cm) {
   in >> m;
   cm = CachedMonomial<M>(m);
   return in;
+}
+
+
+} // namespace groebner
+
+namespace std {
+  template<typename M>
+  struct hash<groebner::CachedMonomial<M> > {
+    size_t operator()(const groebner::CachedMonomial<M>& e) const {
+      size_t result = 0;
+      for (uint i = 0; i < M::VAR_COUNT; ++i) {
+        result *= 2147483647;
+        result += e[i];
+      }
+      return result;
+    }
+  };
 }
 
 #endif // CACHED_MONOMIAL_H

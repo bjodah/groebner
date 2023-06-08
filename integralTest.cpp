@@ -2,6 +2,8 @@
 
 #include "integral.h"
 
+using namespace groebner;
+
 TEST(integralTest, log_2_int) {
   EXPECT_EQ(0, log_2(1));
   EXPECT_EQ(1, log_2(2));
@@ -27,4 +29,4 @@ TEST(integralTest, log_2_mpz) {
   EXPECT_EQ(4, log_2(mpz_class(9)));
   EXPECT_EQ(5, log_2(mpz_class(17)));
 }
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

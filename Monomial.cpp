@@ -16,11 +16,11 @@ std::string abc_var_names(uint index) {
   return std::string(alphabet + index, alphabet + index + 1);
 }
 
-use_abc_var_names::use_abc_var_names() {
+groebner::use_abc_var_names::use_abc_var_names() {
   get_var_name = abc_var_names;
 }
 
-use_abc_var_names::~use_abc_var_names() {
+groebner::use_abc_var_names::~use_abc_var_names() {
   get_var_name = default_get_var_name;
 }
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

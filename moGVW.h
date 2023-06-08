@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MOGVW_H
 #define MOGVW_H
 
@@ -9,8 +10,8 @@
 #include <algorithm>
 #include <memory>
 
-#include "fmpz.h"
-#include "fmpz_mat.h"
+#include "flint/fmpz.h"
+#include "flint/fmpz_mat.h"
 
 #include "style.h"
 #include "debug.h"
@@ -26,6 +27,8 @@
 #include <boost/gil/extension/io/png_io.hpp>
 using namespace boost::gil;
 #endif // PNG_OUTPUT
+
+namespace groebner {
 
 template<class P = Polynomial<Term<int, Monomial<char> > > >
 struct moGVWRunner : public GbRunner {
@@ -505,10 +508,11 @@ private:
   std::unordered_map<M, bool> wasLifted;
 };
 
+} // namespace groebner
+
 template<class A, class B>
 std::ostream& operator<<(std::ostream& out, const std::pair<A, B>& ab) {
   return out << "(" << ab.first << ", " << ab.second << ")";
 }
 
 #endif // MOGVW_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

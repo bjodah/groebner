@@ -1,3 +1,4 @@
+#pragma once
 #ifndef INTEGRAL_H
 #define INTEGRAL_H
 
@@ -6,6 +7,8 @@
 #include <mpirxx.h>
 #include <flint/fmpz.h>
 #include <flint/fmpzxx.h>
+
+namespace groebner {
 
 template<class T>
 T gcd(T m, T n) {
@@ -88,5 +91,7 @@ std::istream& operator>>(std::istream& in, flint::fmpzxx& i);
 std::istream& operator>>(std::istream& in, mpz_class& i);
 std::ostream& operator<<(std::ostream& out, const mpz_class& i);
 
+} // namespace groebner
+
+
 #endif // INTEGRAL_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

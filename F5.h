@@ -1,3 +1,4 @@
+#pragma once
 #ifndef F5_H
 #define F5_H
 
@@ -6,6 +7,8 @@
 
 #include "debug.h"
 #include "GbRunner.h"
+
+namespace groebner {
 
 template<class P = Polynomial<Term<int, Monomial<char> > > >
 struct F5Runner : public GbRunner {
@@ -351,6 +354,7 @@ struct F5Runner : public GbRunner {
   std::vector<R> L;
   std::vector<std::vector<std::pair<M, uint> > > Rules;
 };
+} // namespace groebner
 
 template<class A, class B>
 std::ostream& operator<<(std::ostream& out, const std::pair<A, B>& pair) {
@@ -358,4 +362,3 @@ std::ostream& operator<<(std::ostream& out, const std::pair<A, B>& pair) {
 }
 
 #endif // F5_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

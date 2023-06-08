@@ -1,3 +1,4 @@
+#pragma once
 #ifndef IDEAL_H
 #define IDEAL_H
 
@@ -6,6 +7,7 @@
 
 #include "debug.h"
 
+namespace groebner {
 void read_var_names(std::istream& in);
 std::string var_name(uint index);
 
@@ -33,6 +35,6 @@ std::vector<P> read_input(std::istream& in) {
   read_var_names(in);
   return read_ideal<P>(in);
 }
+} // namespace groebner
 
 #endif // IDEAL_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

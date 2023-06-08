@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MM_H
 #define MM_H
 
@@ -7,6 +8,8 @@
 #include "style.h"
 #include "Signature.h"
 #include "Polynomial.h"
+
+namespace groebner {
 
 template<class P = Polynomial<Term<int, Monomial<char> > > >
 struct MM {
@@ -57,7 +60,6 @@ private:
   boost::intrusive_ptr<MMData> mmData;
 };
 
-
 template<class P>
 MM<P> operator*(const typename P::MonomialType& e, MM<P> m) {
   return m * e;
@@ -68,17 +70,19 @@ std::ostream& operator<<(std::ostream& out, MM<P> uf) {
   return out << "(" << uf.u() << ", " << uf.f() << ")";
 }
 
+
+} // namespace groebner
+
 namespace std {
   template<class P>
-  struct hash<MM<P> > {
-    size_t operator()(MM<P> mm) const {
+  struct hash<groebner::MM<P> > {
+    size_t operator()(groebner::MM<P> mm) const {
       size_t result = 0;
       hash<typename P::MonomialType> mhash;
       result += mhash(mm.f().lm());
       return result;
     }
   };
-}
+} // namespace std
 
 #endif // MM_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef FGB_H
 #define FGB_H
 
@@ -55,6 +56,8 @@ void FGb_pop_gmp_alloc_fnct() {}
 
 #include "style.h"
 #include "Polynomial.h"
+
+namespace groebner {
 
 template<class E = char, uint VC = 74>
 struct FGbRunner {
@@ -144,6 +147,6 @@ struct FGbRunner {
     return output;
   }
 };
-
+} // namespace groebner
 #endif // FGB_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

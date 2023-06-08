@@ -1,3 +1,4 @@
+#pragma once
 #ifndef POLYNOMIAL_H
 #define POLYNOMIAL_H
 
@@ -12,6 +13,10 @@
 #include "Term.h"
 #include "integral.h"
 #include "debug.h"
+
+extern uint max_print_length;
+
+namespace groebner {
 
 template<class T = Term<int, Monomial<char> > >
 class Polynomial {
@@ -172,7 +177,7 @@ public:
     while (it != end) {
       C e = it->c();
       if (e < 0) e *= C(-1);
-      d = gcd(d, e);
+      d = groebner::gcd(d, e);
       if (d == C(1)) return;
       ++it;
     }
@@ -242,8 +247,8 @@ public:
   bool operator==(const This& other) const { return terms == other.terms; }
   bool operator!=(const This& other) const { return terms != other.terms; }
   bool operator<(const This& other) const { return lm() < other.lm(); }
-  template<class T1>
-  friend std::ostream& operator<<(std::ostream& out, const Polynomial<T1>& p);
+  //template<class T1>
+  friend std::ostream& operator<<(std::ostream& out, const Polynomial<T>& p);
 private:
   std::forward_list<TermType> terms;
 };
@@ -291,7 +296,18 @@ Polynomial<T> operator*(const typename T::MonomialType & a, const Polynomial<T>&
 template<class T>
 Polynomial<T> operator*(const T& a, const Polynomial<T>& b) { return b.operator*(a); }
 
-extern uint max_print_length;
+template<class T>
+std::istream& operator>>(std::istream& in, Polynomial<T>& p) {
+  p = Polynomial<T>();
+  auto next = in.peek();
+  while (!in.eof() && (std::isalnum(next) || next == '+' || next == '-')) {
+    T t;
+    in >> t;
+    if (!t.isZero()) p += t;
+    next = in.peek();
+  }
+  return in;
+}
 
 template<class T>
 std::ostream& operator<<(std::ostream& out, const Polynomial<T>& p) {
@@ -329,27 +345,16 @@ std::ostream& operator<<(std::ostream& out, const Polynomial<T>& p) {
   return out;
 }
 
-template<class T>
-std::istream& operator>>(std::istream& in, Polynomial<T>& p) {
-  p = Polynomial<T>();
-  auto next = in.peek();
-  while (!in.eof() && (std::isalnum(next) || next == '+' || next == '-')) {
-    T t;
-    in >> t;
-    if (!t.isZero()) p += t;
-    next = in.peek();
-  }
-  return in;
-}
+} // namespace groebner
 
 namespace std {
   template<typename T>
-  struct hash<Polynomial<T> > {
-    size_t operator()(const Polynomial<T>& p) const {
-      return hash<typename Polynomial<T>::MonomialType>()(p.lm());
+  struct hash<groebner::Polynomial<T> > {
+    size_t operator()(const groebner::Polynomial<T>& p) const {
+      return hash<typename groebner::Polynomial<T>::MonomialType>()(p.lm());
     }
   };
 }
 
 #endif // POLYNOMIAL_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

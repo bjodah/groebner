@@ -1,3 +1,4 @@
+#pragma once
 #ifndef STYLE_H
 #define STYLE_H
 
@@ -30,4 +31,3 @@ T from_string(const std::string& s) {
 }
 
 #endif // STYLE_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

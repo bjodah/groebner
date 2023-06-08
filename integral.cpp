@@ -30,5 +30,3 @@ std::ostream& operator<<(std::ostream& out, const mpz_class& i) {
   free(s);
   return out;
 }
-
-// vim:ruler:cindent:shiftwidth=2:expandtab:

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SIGNATURE_H
 #define SIGNATURE_H
 
@@ -8,6 +9,8 @@
 
 #include "style.h"
 #include "Polynomial.h"
+
+namespace groebner {
 
 /* lead monomials of elements of R^l, i.e. x^{...}*e_i */
 template<class P = Polynomial<Term<int, Monomial<char> > > >
@@ -78,5 +81,6 @@ std::ostream& operator<<(std::ostream& out, const Signature<P>& u) {
   return out << "e_" << u.index;
 }
 
+} // namespace groebner
+
 #endif // SIGNATURE_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

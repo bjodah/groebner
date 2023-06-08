@@ -1,3 +1,4 @@
+#pragma once
 #ifndef DEBUG_H
 #define DEBUG_H
 
@@ -51,4 +52,3 @@ void print(const std::string& prefix, const C& container) {
 std::ostream& now(std::ostream& out);
 
 #endif // DEBUG_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

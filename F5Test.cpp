@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace flint;
+using namespace groebner;
 
 TEST(F5Test, f5) {
   use_abc_var_names in_this_scope;
@@ -101,4 +102,4 @@ TEST(F5Test, hcyclic3_lex) {
 
   EXPECT_EQ(vector<P>({ pow(c, 3)-pow(t, 3), pow(b, 2)+b*c+pow(c,2), a+b+c }), output);
 }
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

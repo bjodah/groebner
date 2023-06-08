@@ -18,7 +18,7 @@ target_sources(groebner PRIVATE
 )
 target_link_libraries(groebner
     Boost::boost
-    flint2
+    flint
     mpir
 )
 target_include_directories(groebner

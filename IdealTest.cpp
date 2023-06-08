@@ -5,6 +5,7 @@
 #include "Polynomial.h"
 
 using namespace std;
+using namespace groebner;
 
 TEST(IdealTest, Input) {
   get_var_name = var_name;
@@ -23,4 +24,4 @@ TEST(IdealTest, Input) {
 
   EXPECT_EQ(vector<P>({a,b*c,a+b+c}), ideal);
 }
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

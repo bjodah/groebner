@@ -1,7 +1,10 @@
+#pragma once
 #ifndef IMMUTABLE_POLYNOMIAL_H
 #define IMMUTABLE_POLYNOMIAL_H
 
 #include "Polynomial.h"
+
+namespace groebner {
 
 template<class P>
 class ImmutablePolynomial {
@@ -75,14 +78,17 @@ std::ostream& operator<<(std::ostream& out, const ImmutablePolynomial<P>& p) {
   return out << p.p;
 }
 
+} // namespace groebner
+
+
 namespace std {
   template<typename P>
-  struct hash<ImmutablePolynomial<P> > {
-    size_t operator()(const ImmutablePolynomial<P>& ip) const {
+  struct hash<groebner::ImmutablePolynomial<P> > {
+      size_t operator()(const groebner::ImmutablePolynomial<P>& ip) const {
       return hash<P>()(ip.p);
     }
   };
 }
 
 #endif // IMMUTABLE_POLYNOMIAL_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

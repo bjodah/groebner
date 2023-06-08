@@ -1,8 +1,11 @@
+#pragma once
 #ifndef GBRUNNER_H
 #define GBRUNNER_H
 
 #include "Polynomial.h"
 #include "Signature.h"
+
+namespace groebner {
 
 struct GbRunner {
   template<class P>
@@ -52,5 +55,7 @@ struct GbRunner {
 
 };
 
+} // namespace groebner
+
 #endif // GBRUNNER_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+

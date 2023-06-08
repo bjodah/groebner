@@ -1,8 +1,11 @@
+#pragma once
 #ifndef ORDER_H
 #define ORDER_H
 
 #include <stdexcept>
 #include <iostream>
+
+namespace groebner {
 
 struct lex {
   template<class M>
@@ -30,6 +33,5 @@ struct degrevlex {
     return false;
   }
 };
-
+} // namespace groebner
 #endif // ORDER_H
-// vim:ruler:cindent:shiftwidth=2:expandtab:

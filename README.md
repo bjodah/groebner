@@ -1,3 +1,10 @@
+# FORK
+
+This is a friendly fork of https://github.com/pichtj/groebner, made to
+get a Cmake build up and running. Original README follows below:
+
+# ORIGINAL READEME:
+
 [![Build Status](http://img.shields.io/travis/pichtj/groebner.svg?style=flat-square)](https://travis-ci.org/pichtj/groebner)
 
 # groebner

@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace flint;
+using namespace groebner;
 
 TEST(moGVWTest, LCMCriterion) {
   use_abc_var_names in_this_scope;
@@ -438,4 +439,4 @@ TEST(moGVWTest, DISABLED_cyclic6mpz_class) {
     a+b+c+d+e+f
   }), output);
 }
-// vim:ruler:cindent:shiftwidth=2:expandtab:
+
