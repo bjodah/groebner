@@ -1,0 +1,3 @@
+[submodule "external/mpir"]
+	path = external/mpir
+	url = github.com:bjodah/mpir

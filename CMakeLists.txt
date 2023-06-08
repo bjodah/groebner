@@ -3,8 +3,8 @@ project(groebner CXX)
 
 find_package(Boost)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
-find_package(FLINT)
-find_package(MPIR)
+find_package(FLINT REQUIRED)
+find_package(MPIR REQUIRED)
 
 add_library(groebner "")
 add_library(groebner::groebner ALIAS groebner)
@@ -20,6 +20,10 @@ target_link_libraries(groebner
     Boost::boost
     flint2
     mpir
+)
+target_include_directories(groebner
+    PRIVATE
+    ${MPIR_INCLUDE_DIR}
 )
 include(CTest)
 find_package(GTest REQUIRED)
@@ -39,4 +43,10 @@ target_link_libraries(PolynomialTest
     GTest::gtest
     GTest::gtest_main
 )
+target_include_directories(PolynomialTest
+    PRIVATE    
+    ${MPIR_INCLUDE_DIR}
+    ${FLINT_INCLUDE_DIRS}
+)
+message("Flint include dir: ${FLINT_INCLUDE_DIRS}")
 add_test(NAME PolynomialTest COMMAND $<TARGET_FILE:PolynomialTest>)
