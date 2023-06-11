@@ -35,6 +35,13 @@ target_link_libraries(F5
     groebner
 )
 
+add_executable(moGVW
+    moGVW.cpp
+)
+target_link_libraries(moGVW
+    groebner
+)
+
 add_executable(interreduce
     interreduce.cpp
 )

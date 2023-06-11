@@ -22,3 +22,4 @@ libpng-*
 bin
 tmp
 intercept.so
+.gdb_history
