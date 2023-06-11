@@ -5,11 +5,12 @@ find_package(Boost)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 find_package(FLINT REQUIRED)
 find_package(MPIR REQUIRED)
+# message("Flint include dir: ${FLINT_INCLUDE_DIRS}")
+
 
 add_library(groebner "")
 add_library(groebner::groebner ALIAS groebner)
 target_sources(groebner PRIVATE
-    F5.cpp
     Monomial.cpp
     Ideal.cpp
     Polynomial.cpp
@@ -22,12 +23,29 @@ target_link_libraries(groebner
     mpir
 )
 target_include_directories(groebner
-    PRIVATE
+    PUBLIC
     ${MPIR_INCLUDE_DIR}
+    ${FLINT_INCLUDE_DIRS}
 )
+
+add_executable(F5
+    F5.cpp
+)
+target_link_libraries(F5
+    groebner
+)
+
+add_executable(interreduce
+    interreduce.cpp
+)
+target_link_libraries(interreduce
+    groebner
+)
+
 include(CTest)
 find_package(GTest REQUIRED)
-add_executable(PolynomialTest
+add_executable(test-runner
+    test-runner.cpp
     F5Test.cpp
     #FGbTest.cpp
     IdealTest.cpp
@@ -38,15 +56,9 @@ add_executable(PolynomialTest
     PolynomialTest.cpp
     TermTest.cpp
 )
-target_link_libraries(PolynomialTest
+target_link_libraries(test-runner
     groebner
     GTest::gtest
     GTest::gtest_main
 )
-target_include_directories(PolynomialTest
-    PRIVATE    
-    ${MPIR_INCLUDE_DIR}
-    ${FLINT_INCLUDE_DIRS}
-)
-message("Flint include dir: ${FLINT_INCLUDE_DIRS}")
-add_test(NAME PolynomialTest COMMAND $<TARGET_FILE:PolynomialTest>)
+add_test(NAME test-runner COMMAND $<TARGET_FILE:test-runner>)

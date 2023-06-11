@@ -15,7 +15,10 @@ endif (MPIR_INCLUDE_DIR AND MPIR_LIBRARIES)
 
 find_path(MPIR_INCLUDE_DIR NAMES mpir.h )
 find_library(MPIR_LIBRARIES NAMES mpir libmpir)
-
+if (NOT TARGET mpir)
+    add_library(mpir UNKNOWN IMPORTED)
+    set_property(TARGET mpir PROPERTY IMPORTED_LOCATION ${MPIR_LIBRARIES})
+endif()
 include(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(MPIR DEFAULT_MSG MPIR_INCLUDE_DIR MPIR_LIBRARIES)
 
