@@ -1,11 +1,19 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(groebner CXX)
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake;${CMAKE_MODULE_PATH}")
+include(_globally_applied_options)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD 20)
+
+
 find_package(Boost)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 find_package(FLINT REQUIRED)
 find_package(MPIR REQUIRED)
 # message("Flint include dir: ${FLINT_INCLUDE_DIRS}")
+
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 add_library(groebner "")
@@ -22,6 +30,7 @@ target_link_libraries(groebner
     flint
     mpir
 )
+target_compile_options(groebner PRIVATE ${COMMON_WARNINGS})
 target_include_directories(groebner
     PUBLIC
     ${MPIR_INCLUDE_DIR}
@@ -34,6 +43,7 @@ add_executable(F5
 target_link_libraries(F5
     groebner
 )
+target_compile_options(F5 PRIVATE ${COMMON_WARNINGS})
 
 add_executable(moGVW
     moGVW.cpp
@@ -41,6 +51,7 @@ add_executable(moGVW
 target_link_libraries(moGVW
     groebner
 )
+target_compile_options(moGVW PRIVATE ${COMMON_WARNINGS})
 
 add_executable(interreduce
     interreduce.cpp
@@ -48,6 +59,8 @@ add_executable(interreduce
 target_link_libraries(interreduce
     groebner
 )
+target_compile_options(interreduce PRIVATE ${COMMON_WARNINGS})
+
 
 include(CTest)
 find_package(GTest REQUIRED)
@@ -68,4 +81,5 @@ target_link_libraries(test-runner
     GTest::gtest
     GTest::gtest_main
 )
+target_compile_options(test-runner PRIVATE ${COMMON_WARNINGS})
 add_test(NAME test-runner COMMAND $<TARGET_FILE:test-runner>)
