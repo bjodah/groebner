@@ -11,23 +11,23 @@ namespace groebner {
 template <class M>
 class CachedMonomial {
 public:
-    typedef typename M::ExponentType ExponentType;
-    typedef CachedMonomial<M> This;
+    using ExponentType = typename M::ExponentType;
+    using This = CachedMonomial<M>;
     static const uint VAR_COUNT = M::VAR_COUNT;
 
     CachedMonomial()
         : m_(addIfNecessary(M()))
     {
     }
-    CachedMonomial(const M& m)
+    explicit CachedMonomial(const M& m)
         : m_(addIfNecessary(m))
     {
     }
 
     ExponentType operator[](uint index) const { return m()[index]; }
 
-    uint degree() const { return m().degree(); }
-    bool isConstant() const { return m().isConstant(); }
+    [[nodiscard]] uint degree() const { return m().degree(); }
+    [[nodiscard]] bool isConstant() const { return m().isConstant(); }
 
     This operator*(const This& other) const { return This(m() * other.m()); }
     This& operator*=(const This& other)
@@ -57,7 +57,7 @@ public:
 
     bool operator==(const This& other) const { return m_ == other.m_; }
     bool operator!=(const This& other) const { return !(operator==(other)); }
-    bool isZero() const { return m().isZero(); }
+    [[nodiscard]] bool isZero() const { return m().isZero(); }
 
     static This x(uint i) { return This(M::x(i)); }
 
@@ -69,11 +69,10 @@ private:
         auto it = std::find(cache.begin(), cache.end(), m);
         if (it != cache.end()) {
             return &*it;
-        } else {
-            D("adding " << m << " to cache");
-            cache.push_back(m);
-            return &cache.back();
         }
+        D("adding " << m << " to cache");
+        cache.push_back(m);
+        return &cache.back();
     }
 
     M* m_;
@@ -127,6 +126,6 @@ struct hash<groebner::CachedMonomial<M>> {
         return result;
     }
 };
-}
+} // namespace std
 
 #endif // CACHED_MONOMIAL_H

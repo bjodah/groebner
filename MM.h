@@ -13,11 +13,11 @@ namespace groebner {
 
 template <class P = Polynomial<Term<int, Monomial<char>>>>
 struct MM {
-    typedef typename P::MonomialType M;
-    typedef typename P::TermType T;
-    typedef typename P::CoefficientType C;
-    typedef Signature<P> S;
-    typedef MM<P> This;
+    using M = typename P::MonomialType;
+    using T = typename P::TermType;
+    using C = typename P::CoefficientType;
+    using S = Signature<P>;
+    using This = MM<P>;
 
     MM()
         : mmData(boost::intrusive_ptr<MMData>(new MMData()))
@@ -28,8 +28,8 @@ struct MM {
     {
     }
 
-    const P& f() const { return mmData.get()->f_; }
-    const S& u() const { return mmData.get()->u_; }
+    const P& f() const { return mmData->f_; }
+    const S& u() const { return mmData->u_; }
 
     bool operator<(const This& other) const
     {

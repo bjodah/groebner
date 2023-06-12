@@ -23,5 +23,5 @@ TEST(IdealTest, Input)
     T b = T(1, M::x(1));
     T c = T(1, M::x(2));
 
-    EXPECT_EQ(vector<P>({ a, b * c, a + b + c }), ideal);
+    EXPECT_EQ(vector<P>({ P{a}, P{b * c}, a + b + c }), ideal);
 }

@@ -8,25 +8,27 @@
 #include "integral.h"
 #include "moGVW.h"
 
-using namespace groebner;
+namespace gr = groebner;
 
 int main(int argc, char* argv[])
 {
-    get_var_name = var_name;
+    gr::get_var_name = gr::var_name;
 
-    typedef Polynomial<Term<flint::fmpzxx, Monomial<char, 64, degrevlex>>> P;
+    typedef gr::Polynomial<gr::Term<flint::fmpzxx, gr::Monomial<char, 64, gr::degrevlex>>> P;
 
     std::vector<P> input;
-    if (argc > 0) {
+    if (argc > 1) {
+        D("reading input from file " << argv[1]);
         std::ifstream in_file(argv[1]);
-        input = read_input<P>(in_file);
+        input = gr::read_input<P>(in_file);
     } else {
-        input = read_input<P>(std::cin);
+        D("reading input from stdin");
+        input = gr::read_input<P>(std::cin);
     }
-    moGVWRunner<P> runner;
+    gr::moGVWRunner<P> runner;
     auto output = runner.moGVW(input);
-    for (auto it = output.begin(); it != output.end(); ++it) {
-        std::cout << *it << std::endl;
+    for (auto & it : output) {
+        std::cout << it << std::endl;
     }
     return 0;
 }

@@ -24,7 +24,7 @@ TEST(F5Test, f5)
     T c = T(1, M::x(2));
     T t = T(1, M::x(3));
 
-    P f1 = a * b * c;
+    P f1 = P{a * b * c};
     P f2 = a * b - c;
     P f3 = b * c - b;
 
@@ -32,7 +32,7 @@ TEST(F5Test, f5)
 
     auto output = runner.f5(input);
 
-    EXPECT_EQ(vector<P>({ b * c - b * t, a * b - c * t, c * pow(t, 2), pow(c, 2) * t, b * pow(t, 3) }), output);
+    EXPECT_EQ(vector<P>({ P{b * c - b * t}, P{a * b - c * t}, P{c * pow(t, 2)}, P{pow(c, 2) * t}, P{b * pow(t, 3)} }), output);
 }
 
 TEST(F5Test, hcyclic3_degrevlex)

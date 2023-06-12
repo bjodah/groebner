@@ -23,3 +23,5 @@ bin
 tmp
 intercept.so
 .gdb_history
+compile_commands.json
+.cache/

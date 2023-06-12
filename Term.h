@@ -13,16 +13,16 @@ namespace groebner {
 template <class C = int, class M = Monomial<char>>
 class Term {
 public:
-    typedef C CoefficientType;
-    typedef M MonomialType;
-    typedef Term<C, M> This;
+    using CoefficientType = C;
+    using MonomialType = M;
+    using This = Term<C, M>;
 
     Term()
         : coeff()
         , exp()
     {
     }
-    Term(const C& c)
+    explicit Term(const C& c)
         : coeff(c)
         , exp()
     {
@@ -78,10 +78,10 @@ public:
     C c() const { return coeff; }
     C& c() { return coeff; }
     M m() const { return exp; }
-    uint degree() const { return exp.degree(); }
-    bool isZero() const { return coeff == 0; }
-    bool isOne() const { return coeff == 1 && exp.isConstant(); }
-    bool isConstant() const { return coeff == 0 || exp.isConstant(); }
+    [[nodiscard]] uint degree() const { return exp.degree(); }
+    [[nodiscard]] bool isZero() const { return coeff == 0; }
+    [[nodiscard]] bool isOne() const { return coeff == 1 && exp.isConstant(); }
+    [[nodiscard]] bool isConstant() const { return coeff == 0 || exp.isConstant(); }
 
 private:
     C coeff;

@@ -19,8 +19,8 @@ extern std::string (*default_get_var_name)(uint);
 template <class E = char, uint VC = 5, class O = lex>
 class Monomial {
 public:
-    typedef E ExponentType;
-    typedef Monomial<E, VC, O> This;
+    using ExponentType = E;
+    using This = Monomial<E, VC, O>;
     static const uint VAR_COUNT = VC;
 
     Monomial()
@@ -30,17 +30,16 @@ public:
     E& operator[](uint index) { return mon[index]; }
     E operator[](uint index) const { return mon[index]; }
 
-    uint degree() const
+    [[nodiscard]] uint degree() const
     {
         uint result = 0;
-        uint i;
-        for (i = 0; i < VAR_COUNT; ++i) {
+        for (uint i = 0; i < VAR_COUNT; ++i) {
             result += mon[i];
         }
         return result;
     }
 
-    bool isConstant() const
+    [[nodiscard]] bool isConstant() const
     {
         for (uint i = 0; i < VAR_COUNT; ++i) {
             if (mon[i] > 0) {
@@ -126,7 +125,7 @@ public:
         return true;
     }
     bool operator!=(const This& other) const { return !(operator==(other)); }
-    bool isZero() const
+    [[nodiscard]] bool isZero() const
     {
         for (uint i = 0; i < VAR_COUNT; ++i) {
             if (mon[i] != 0) {
@@ -144,7 +143,7 @@ public:
     }
 
 private:
-    E mon[VAR_COUNT];
+    std::array<E, VAR_COUNT> mon;
 };
 
 template <class E, uint VC, class O>
@@ -172,8 +171,8 @@ inline std::string read_monomial_name(std::istream& in)
     std::string result;
     while (!in.eof()) {
         auto next = in.peek();
-        if (std::isalpha(next) || (!result.empty() && std::isdigit(next))) {
-            result += next;
+        if (std::isalpha(next) || (!result.empty() && std::isdigit(next))) { // NOLINT(readability-implicit-bool-conversion)
+            result += (char)next;
             in.get();
         } else {
             break;
@@ -193,7 +192,7 @@ E read_exponent(std::istream& in)
 template <>
 inline char read_exponent(std::istream& in)
 {
-    int result;
+    int result; // NOLINT(cppcoreguidelines-init-variables)
     in >> result;
     return (char)result;
 }
@@ -250,7 +249,7 @@ std::istream& operator>>(std::istream& in, Monomial<E, VC, O>& m)
             return in;
         }
         bool found = false;
-        uint i;
+        uint i; // NOLINT(cppcoreguidelines-init-variables)
         for (i = 0; i < VC; ++i) {
             if (get_var_name(i) == current_monomial_name) {
                 found = true;

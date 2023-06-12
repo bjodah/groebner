@@ -14,7 +14,7 @@ TEST(TermTest, Multiplication)
     T x = T(1, M::x(0));
     T y = T(1, M::x(1));
 
-    T t = 1;
+    T t {1};
     t *= y;
 
     EXPECT_EQ(T(1, Y), t);
@@ -28,7 +28,7 @@ TEST(TermTest, Multiplication)
     EXPECT_EQ(T(-8, Y), t3);
 
     T t4 = t2;
-    t4 *= 3;
+    t4 *= T{3};
 
     EXPECT_EQ(T(15, X), t4);
 
@@ -59,7 +59,7 @@ TEST(TermTest, MultiplicationWithZero)
     EXPECT_TRUE(t.m().isConstant());
 
     T s(5, M::x(1));
-    s *= 0;
+    s *= T{0};
     EXPECT_EQ(0, s.c());
     EXPECT_EQ(M(), s.m());
     EXPECT_TRUE(s.isZero());

@@ -8,29 +8,29 @@ namespace groebner {
 
 template <class P>
 class ImmutablePolynomial {
-    typedef typename P::CoefficientType C;
-    typedef typename P::MonomialType M;
-    typedef typename P::TermType T;
+    using C = typename P::CoefficientType;
+    using M = typename P::MonomialType;
+    using T = typename P::TermType;
 
 public:
-    typedef typename P::CoefficientType CoefficientType;
-    typedef typename P::MonomialType MonomialType;
-    typedef typename P::TermType TermType;
-    typedef ImmutablePolynomial<P> This;
+    using CoefficientType = typename P::CoefficientType;
+    using MonomialType = typename P::MonomialType;
+    using TermType = typename P::TermType;
+    using This = ImmutablePolynomial<P>;
 
     ImmutablePolynomial()
         : p()
     {
     }
-    ImmutablePolynomial(const C& c)
+    explicit ImmutablePolynomial(const C& c)
         : p(c)
     {
     }
-    ImmutablePolynomial(const T& t)
+    explicit ImmutablePolynomial(const T& t)
         : p(t)
     {
     }
-    ImmutablePolynomial(const P& p_)
+    explicit ImmutablePolynomial(const P& p_)
         : p(p_)
     {
     }
@@ -39,8 +39,8 @@ public:
     M lm() const { return p.lm(); }
 
     class TermIterator : public std::iterator<std::forward_iterator_tag, const T> {
-        typedef TermIterator This;
-        TermIterator(const typename P::TermIterator& it_)
+        using This = TermIterator;
+        explicit TermIterator(const typename P::TermIterator& it_)
             : it(it_)
         {
         }
@@ -72,7 +72,7 @@ public:
     TermIterator end() const { return TermIterator(p.end()); }
 
     C operator[](const M& m) const { return p[m]; }
-    bool isZero() const { return p.isZero(); }
+    [[nodiscard]] bool isZero() const { return p.isZero(); }
     This operator+(const C& c) const { return This(p + c); }
     This operator-(const C& c) const { return This(p - c); }
     This operator+(const T& t) const { return This(p + t); }
@@ -119,6 +119,6 @@ struct hash<groebner::ImmutablePolynomial<P>> {
         return hash<P>()(ip.p);
     }
 };
-}
+} // namespace std
 
 #endif // IMMUTABLE_POLYNOMIAL_H

@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 
-typedef unsigned int uint;
-typedef unsigned long ulong;
+using uint = unsigned int;
+using ulong = unsigned long;
 
 template <class T>
 std::string to_string(const T& t)
@@ -20,7 +20,7 @@ std::string to_string(const T& t)
 inline std::string to_string(uint i, uint width)
 {
     std::stringstream s;
-    s << std::setw(width) << std::setfill('0') << i;
+    s << std::setw((int)width) << std::setfill('0') << i;
     return s.str();
 }
 

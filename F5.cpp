@@ -27,8 +27,8 @@ int main(int argc, char* argv[])
     DD("input = ", input);
     gr::F5Runner<P> runner;
     auto output = runner.f5(input);
-    for (auto it = output.begin(); it != output.end(); ++it) {
-        std::cout << *it << std::endl;
+    for (auto & it : output) {
+        std::cout << it << std::endl;
     }
     return 0;
 }

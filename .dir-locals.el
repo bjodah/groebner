@@ -8,4 +8,5 @@
 -S /work/external/groebner \
 && cmake --build /bld/groebner --verbose --clean-first \
 && cd /bld/groebner \
-&& ctest --output-on-failure"))))
+&& ctest --output-on-failure \
+&& ln -s /bld/groebner/compile_commands.json /work/external/groebner"))))

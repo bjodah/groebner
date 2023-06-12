@@ -32,19 +32,19 @@ namespace groebner {
 
 template <class P = Polynomial<Term<int, Monomial<char>>>>
 struct moGVWRunner : public GbRunner {
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
-    typedef typename P::CoefficientType C;
-    typedef Signature<P> S;
-    typedef MM<P> MMP;
-    typedef std::unordered_map<M, MMP> LMSet;
-    typedef std::unordered_set<MMP> MMSet;
-    typedef std::set<M> MSet;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
+    using C = typename P::CoefficientType;
+    using S = Signature<P>;
+    using MMP = MM<P>;
+    using LMSet = std::unordered_map<M, MMP>;
+    using MMSet = std::unordered_set<MMP>;
+    using MSet = std::set<M>;
 
     MMP signature(const M& m, MMP uf) const
     {
         M t = m / uf.f().lm();
-        return MMP(uf.u(), T(C(1), t));
+        return MMP(uf.u(), P{T(C(1), t)});
     }
     MMP signature(const std::pair<M, MMP>& muf) const { return signature(muf.first, muf.second); }
 
@@ -80,7 +80,7 @@ struct moGVWRunner : public GbRunner {
         return false;
     }
 
-    bool rejectedByRewrittenCriterion(const M& m, MMP uf, const LMSet& GG)
+    bool rejectedByRewrittenCriterion(/*const M& m,*/ MMP uf, const LMSet& GG)
     {
         auto lmu = uf.u();
         auto lmf = uf.f().lm();
@@ -123,7 +123,7 @@ struct moGVWRunner : public GbRunner {
                     if (tf_lmu > tg_lmv
                         && !rejectedByLCMCriterion(xim_m, uf, GG)
                         && !rejectedBySyzygyCriterion(xim_m, uf, GG)
-                        && !rejectedByRewrittenCriterion(xim_m, uf, GG)) {
+                        && !rejectedByRewrittenCriterion(/*xim_m,*/ uf, GG)) {
                         auto tf_uf = t_f * uf;
                         auto tg_vg = t_g * vg;
                         D("inserting " << tf_uf << " into HH");
@@ -136,7 +136,7 @@ struct moGVWRunner : public GbRunner {
                         GG[xim_m] = uf;
                         if (!rejectedByLCMCriterion(xim_m, vg, GG)
                             && !rejectedBySyzygyCriterion(xim_m, vg, GG)
-                            && !rejectedByRewrittenCriterion(xim_m, vg, GG)) {
+                            && !rejectedByRewrittenCriterion(/*xim_m,*/ vg, GG)) {
                             auto tf_uf = t_f * uf;
                             auto tg_vg = t_g * vg;
                             D("inserting " << tf_uf << " into HH");
@@ -187,7 +187,7 @@ struct moGVWRunner : public GbRunner {
     }
 
     struct row {
-        row(MMP vg)
+        explicit row(MMP vg)
             : uf(vg)
             , done(vg.f().isZero())
         {
@@ -207,7 +207,7 @@ struct moGVWRunner : public GbRunner {
     };
 
     struct PolynomialMatrix {
-        PolynomialMatrix(const MMSet& HH)
+        explicit PolynomialMatrix(const MMSet& HH)
         {
             for (auto uf : HH) {
                 rows.push_back(row(uf));

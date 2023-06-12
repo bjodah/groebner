@@ -12,11 +12,11 @@ namespace groebner {
 
 template <class P = Polynomial<Term<int, Monomial<char>>>>
 struct F5Runner : public GbRunner {
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
-    typedef typename P::CoefficientType C;
-    typedef Signature<P> S;
-    typedef std::pair<S, P> R;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
+    using C = typename P::CoefficientType;
+    using S = Signature<P>;
+    using R = std::pair<S, P>;
 
     static S signature(const R& r) { return r.first; }
     static P poly(const R& r) { return r.second; }
@@ -27,7 +27,7 @@ struct F5Runner : public GbRunner {
     uint index(uint i) { return index(L[i]); }
 
     struct CriticalPair {
-        CriticalPair(const M& t_, const M& u1_, uint r1_, const M& u2_, uint r2_)
+        CriticalPair(const M& t_, const M& u1_, uint r1_, const M& u2_, uint r2_) // NOLINT(bugprone-easily-swappable-parameters)
             : t(t_)
             , u1(u1_)
             , r1(r1_)
@@ -72,12 +72,12 @@ struct F5Runner : public GbRunner {
                     p = P::combineAndRenormalize(p, q.lc(), r, m_tc);
                     D("reduced to = " << p);
                     t = p.begin();
-                    while (t != p.end() && t->m() > level)
+                    while (t != p.end() && t->m() > level) {
                         ++t;
+                    }
                     break;
-                } else {
-                    ++i;
                 }
+                ++i;
             }
             if (i == G[k].size()) {
                 D("could not reduce " << t->m());
@@ -199,11 +199,11 @@ struct F5Runner : public GbRunner {
 
     bool topReducible(const M& m, uint k)
     {
-        if (k >= G.size())
+        if (k >= G.size()) {
             return false;
-
-        for (uint i = 0; i < G[k].size(); ++i) {
-            const auto& q = poly(G[k][i]);
+        }
+        for (unsigned int i : G[k]) {
+            const auto& q = poly(i);
             if (q.lm().divides(m)) {
                 D(m << " is top reducible");
                 return true;
@@ -232,7 +232,7 @@ struct F5Runner : public GbRunner {
                 continue;
             return boost::make_optional(j);
         }
-        return boost::optional<uint>();
+        return {};
     }
 
     std::pair<boost::optional<uint>, std::vector<uint>> TopReduction(uint k, const std::vector<uint>& GG)

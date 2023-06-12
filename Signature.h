@@ -16,10 +16,10 @@ namespace groebner {
 template <class P = Polynomial<Term<int, Monomial<char>>>>
 class Signature {
 public:
-    typedef typename P::TermType::MonomialType MonomialType;
-    typedef typename P::TermType::CoefficientType CoefficientType;
-    typedef typename P::TermType TermType;
-    typedef Signature<P> This;
+    using MonomialType = typename P::TermType::MonomialType;
+    using CoefficientType = typename P::TermType::CoefficientType;
+    using TermType = typename P::TermType;
+    using This = Signature<P>;
 
     Signature()
         : m()

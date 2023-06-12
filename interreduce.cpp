@@ -28,8 +28,8 @@ int main(int argc, char* argv[])
     DD("input = ", input);
     GbRunner::interreduce(input);
     std::sort(input.begin(), input.end());
-    for (auto it = input.begin(); it != input.end(); ++it) {
-        std::cout << *it << std::endl;
+    for (auto & it : input) {
+        std::cout << it << std::endl;
     }
     return 0;
 }

@@ -11,10 +11,10 @@ struct GbRunner {
     template <class P>
     static void interreduce(std::vector<P>& polynomials)
     {
-        typedef typename P::CoefficientType C;
+        using C = typename P::CoefficientType;
 
         DD("polynomials = ", polynomials);
-        bool stable;
+        bool stable; // NOLINT(cppcoreguidelines-init-variables)
         do {
             stable = true;
             for (auto p = polynomials.begin(); p != polynomials.end(); ++p) {

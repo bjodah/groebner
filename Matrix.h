@@ -9,9 +9,9 @@ namespace groebner {
 
 template <uint ROWS, uint COLS, class P = Polynomial<Term<int, Monomial<char>>>>
 struct CoefficientMatrix {
-    typedef typename P::MonomialType M;
-    typedef typename P::TermType T;
-    typedef typename P::CoefficientType C;
+    using M = typename P::MonomialType;
+    using T = typename P::TermType;
+    using C = typename P::CoefficientType;
 };
 
 template <uint ROWS, uint COLS, class P = Polynomial<Term<int, Monomial<char>>>>

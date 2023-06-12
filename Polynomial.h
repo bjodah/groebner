@@ -22,17 +22,17 @@ extern uint max_print_length;
 
 template <class T = Term<int, Monomial<char>>>
 class Polynomial {
-    typedef typename T::CoefficientType C;
-    typedef typename T::MonomialType M;
+    using C = typename T::CoefficientType;
+    using M = typename T::MonomialType;
 
 public:
-    typedef typename T::CoefficientType CoefficientType;
-    typedef typename T::MonomialType MonomialType;
-    typedef T TermType;
-    typedef Polynomial<T> This;
+    using CoefficientType = typename T::CoefficientType;
+    using MonomialType = typename T::MonomialType;
+    using TermType = T;
+    using This = Polynomial<T>;
 
-    Polynomial() { }
-    Polynomial(const C& c)
+    Polynomial() = default;
+    explicit Polynomial(const C& c)
         : terms({ T(c) })
     {
     }
@@ -40,7 +40,7 @@ public:
         : terms({ T(c, m) })
     {
     }
-    Polynomial(const T& t)
+    explicit Polynomial(const T& t)
         : terms({ t })
     {
     }
@@ -49,22 +49,20 @@ public:
     {
         if (!terms.empty()) {
             return terms.front().c();
-        } else {
-            return C();
         }
+        return C();
     }
     M lm() const
     {
         if (!terms.empty()) {
             return terms.front().m();
-        } else {
-            return M();
         }
+        return M();
     }
 
     class TermIterator : public std::iterator<std::forward_iterator_tag, const T> {
-        typedef TermIterator This;
-        TermIterator(const typename std::forward_list<T>::const_iterator& it_)
+        using This = TermIterator;
+        explicit TermIterator(const typename std::forward_list<T>::const_iterator& it_)
             : it(it_)
         {
         }
@@ -94,7 +92,7 @@ public:
 
     TermIterator begin() const { return TermIterator(terms.begin()); }
     TermIterator end() const { return TermIterator(terms.end()); }
-    size_t size() const
+    [[nodiscard]] size_t size() const
     {
         uint r = 0;
         auto it = begin();
@@ -116,9 +114,9 @@ public:
             return c->c();
         return C();
     }
-    bool isZero() const { return terms.empty(); }
-    bool isConstant() const { return isZero() || lm().isConstant(); }
-    bool isHomogeneous() const
+    [[nodiscard]] bool isZero() const { return terms.empty(); }
+    [[nodiscard]] bool isConstant() const { return isZero() || lm().isConstant(); }
+    [[nodiscard]] bool isHomogeneous() const
     {
         if (isZero())
             return true;
@@ -321,8 +319,9 @@ public:
             terms.clear();
             return *this;
         }
-        for (auto it = terms.begin(); it != terms.end(); ++it) {
-            *it *= c;
+        T tc {c};
+        for (auto & t : terms) {
+            t *= tc;
         }
         return *this;
     }
@@ -504,6 +503,6 @@ struct hash<groebner::Polynomial<T>> {
         return hash<typename groebner::Polynomial<T>::MonomialType>()(p.lm());
     }
 };
-}
+} // namespace std
 
 #endif // POLYNOMIAL_H

@@ -17,10 +17,10 @@ using namespace groebner;
 TEST(moGVWTest, LCMCriterion)
 {
     use_abc_var_names in_this_scope;
-    typedef Monomial<> M;
-    typedef Term<> T;
-    typedef Polynomial<> P;
-    typedef moGVWRunner<>::LMSet LMSet;
+    using M = Monomial<>;
+    using T = Term<>;
+    using P = Polynomial<>;
+    using LMSet = moGVWRunner<>::LMSet;
     moGVWRunner<> runner;
 
     T a = T(1, M::x(0));
@@ -57,11 +57,11 @@ TEST(moGVWTest, LCMCriterion)
 TEST(moGVWTest, lift)
 {
     use_abc_var_names in_this_scope;
-    typedef Monomial<> M;
-    typedef Term<> T;
-    typedef Polynomial<> P;
-    typedef moGVWRunner<>::LMSet LMSet;
-    typedef moGVWRunner<>::MMSet MMSet;
+    using M = Monomial<>;
+    using T = Term<>;
+    using P = Polynomial<>;
+    using LMSet = moGVWRunner<>::LMSet;
+    using MMSet = moGVWRunner<>::MMSet;
     moGVWRunner<> runner;
 
     T a = T(1, M::x(0));
@@ -106,9 +106,9 @@ TEST(moGVWTest, lift)
 TEST(moGVWTest, moGVW)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 3>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, Monomial<char, 3>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(1, M::x(0));
@@ -129,9 +129,9 @@ TEST(moGVWTest, moGVW)
 TEST(moGVWTest, cyclic3)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 3>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, Monomial<char, 3>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(1, M::x(0));
@@ -152,10 +152,10 @@ TEST(moGVWTest, cyclic3)
 TEST(moGVWTest, cyclic3_immutable)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 3>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
-    typedef ImmutablePolynomial<P> I;
+    using P = Polynomial<Term<int, Monomial<char, 3>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
+    using I = ImmutablePolynomial<P>;
     moGVWRunner<I> runner;
 
     T a = T(1, M::x(0));
@@ -163,22 +163,22 @@ TEST(moGVWTest, cyclic3_immutable)
     T c = T(1, M::x(2));
 
     vector<I> input = {
-        a + b + c,
-        a * b + a * c + b * c,
-        a * b * c - 1
+        I{a + b + c},
+        I{a * b + a * c + b * c},
+        I{a * b * c - 1}
     };
 
     auto output = runner.moGVW(input);
 
-    EXPECT_EQ(vector<I>({ pow(c, 3) - 1, pow(b, 2) + b * c + pow(c, 2), a + b + c }), output);
+    EXPECT_EQ(vector<I>({ I{pow(c, 3) - 1}, I{pow(b, 2) + b * c + pow(c, 2)}, I{a + b + c} }), output);
 }
 
 TEST(moGVWTest, cyclic3_cached)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, CachedMonomial<Monomial<char, 3>>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, CachedMonomial<Monomial<char, 3>>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(1, M::x(0));
@@ -199,9 +199,9 @@ TEST(moGVWTest, cyclic3_cached)
 TEST(moGVWTest, cyclic3_degrevlex)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 3, degrevlex>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, Monomial<char, 3, degrevlex>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(1, M::x(0));
@@ -222,9 +222,9 @@ TEST(moGVWTest, cyclic3_degrevlex)
 TEST(moGVWTest, cyclic4)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 4>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, Monomial<char, 4>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(1, M::x(0));
@@ -253,9 +253,9 @@ TEST(moGVWTest, cyclic4)
 TEST(moGVWTest, cyclic4_degrevlex)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 4, degrevlex>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, Monomial<char, 4, degrevlex>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(1, M::x(0));
@@ -285,9 +285,9 @@ TEST(moGVWTest, cyclic4_degrevlex)
 TEST(moGVWTest, cyclic5mpz_class)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<mpz_class, Monomial<char, 5>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<mpz_class, Monomial<char, 5>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(1, M::x(0));
@@ -323,9 +323,9 @@ TEST(moGVWTest, cyclic5mpz_class)
 TEST(moGVWTest, cyclic5fmpzxx)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<fmpzxx, Monomial<char, 5>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<fmpzxx, Monomial<char, 5>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(fmpzxx(1), M::x(0));
@@ -361,9 +361,9 @@ TEST(moGVWTest, cyclic5fmpzxx)
 TEST(moGVWTest, cyclic5fmpzxx_degrevlex)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<fmpzxx, Monomial<char, 5, degrevlex>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<fmpzxx, Monomial<char, 5, degrevlex>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(fmpzxx(1), M::x(0));
@@ -409,9 +409,9 @@ TEST(moGVWTest, cyclic5fmpzxx_degrevlex)
 TEST(moGVWTest, DISABLED_cyclic6mpz_class)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<mpz_class, Monomial<char, 6>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<mpz_class, Monomial<char, 6>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     moGVWRunner<P> runner;
 
     T a = T(1, M::x(0));

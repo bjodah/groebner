@@ -13,12 +13,15 @@ namespace groebner {
 template <class T>
 T gcd(T m, T n)
 {
-    if (m < 0)
+    if (m < 0) {
         return gcd(-m, n);
-    if (n < 0)
+    }
+    if (n < 0) {
         return gcd(m, -n);
-    if (m == 0)
+    }
+    if (m == 0) {
         return n;
+    }
     while (m != n) {
         if (m < n) {
             std::swap(m, n);
@@ -31,15 +34,18 @@ T gcd(T m, T n)
 template <>
 inline long gcd(long m, long n)
 {
-    if (m == 0 || n == 0)
+    if (m == 0 || n == 0) {
         return 0;
-    while (1) {
+    }
+    while (true) {
         m = m % n;
-        if (m == 0)
+        if (m == 0) {
             return n;
+        }
         n = n % m;
-        if (n == 0)
+        if (n == 0) {
             return m;
+        }
     }
 }
 
@@ -64,8 +70,9 @@ typename C::value_type gcd(const C& c)
 {
     auto it = c.begin();
     auto end = c.end();
-    if (it == end)
+    if (it == end) {
         return typename C::value_type();
+    }
     auto result = *it;
     for (++it; it != end; ++it) {
         result = gcd(result, *it);
@@ -88,8 +95,9 @@ size_t log_2(const C& c)
 template <>
 inline size_t log_2(const mpz_class& c)
 {
-    if (c == 0 || c == 1)
+    if (c == 0 || c == 1) {
         return 0;
+    }
     mpz_class d = c - 1;
     return mpz_sizeinbase(d.get_mpz_t(), 2);
 }
@@ -97,8 +105,9 @@ inline size_t log_2(const mpz_class& c)
 template <>
 inline size_t log_2(const flint::fmpzxx& c)
 {
-    if (c == 0 || c == 1)
+    if (c == 0 || c == 1) {
         return 0;
+    }
     flint::fmpzxx d = c;
     d -= flint::fmpzxx(1);
     return fmpz_sizeinbase(d._fmpz(), 2);
