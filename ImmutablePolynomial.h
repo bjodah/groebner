@@ -38,7 +38,11 @@ public:
     C lc() const { return p.lc(); }
     M lm() const { return p.lm(); }
 
-    class TermIterator : public std::iterator<std::forward_iterator_tag, const T> {
+    class TermIterator {
+        using difference_type = std::ptrdiff_t;
+        using value_type = T;
+        using pointer = const T*;
+        using reference = const T&;
         using This = TermIterator;
         explicit TermIterator(const typename P::TermIterator& it_)
             : it(it_)
@@ -61,8 +65,8 @@ public:
         }
         bool operator==(const This& other) const { return it == other.it; }
         bool operator!=(const This& other) const { return it != other.it; }
-        typename std::iterator<std::forward_iterator_tag, const T>::reference operator*() const { return it.operator*(); }
-        typename std::iterator<std::forward_iterator_tag, const T>::pointer operator->() const { return it.operator->(); }
+        reference operator*() const { return it.operator*(); }
+        pointer operator->() const { return it.operator->(); }
 
     private:
         typename P::TermIterator it;

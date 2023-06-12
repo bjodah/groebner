@@ -244,14 +244,14 @@ struct moGVWRunner : public GbRunner {
         }
 
 #ifdef PNG_OUTPUT
-        typedef point2<ptrdiff_t> point_t;
+        using point_t = point2<ptrdiff_t>;
 
-        typedef PolynomialMatrix const_t;
-        typedef gray8_pixel_t value_type;
-        typedef value_type reference;
-        typedef value_type const_reference;
-        typedef point_t argument_type;
-        typedef reference result_type;
+        using const_t = PolynomialMatrix;
+        using value_type = gray8_pixel_t;
+        using reference = value_type;
+        using const_reference = value_type;
+        using argument_type = point_t;
+        using result_type = reference;
         BOOST_STATIC_CONSTANT(bool, is_mutable = false);
 
         result_type operator()(const point_t& p) const
@@ -277,8 +277,8 @@ struct moGVWRunner : public GbRunner {
             if (rows.size() == 0 || monomials.size() == 0)
                 return;
 
-            typedef virtual_2d_locator<PolynomialMatrix, false> locator_t;
-            typedef image_view<locator_t> my_virt_view_t;
+            using locator_t = virtual_2d_locator<PolynomialMatrix, false>;
+            using my_virt_view_t = image_view<locator_t>;
 
             auto png_filename = filename + ".png";
             I("saving " + png_filename + "...");
@@ -286,6 +286,10 @@ struct moGVWRunner : public GbRunner {
 
             my_virt_view_t view(dims, locator_t(point_t(0, 0), point_t(1, 1), *this));
             png_write_view(png_filename.c_str(), view);
+#else
+            if (filename.size()>42) {
+                return;
+            }
 #endif // PNG_OUTPUT
         }
 

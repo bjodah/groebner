@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #ifndef POLYNOMIAL_H
 #define POLYNOMIAL_H
 
@@ -60,7 +61,14 @@ public:
         return M();
     }
 
-    class TermIterator : public std::iterator<std::forward_iterator_tag, const T> {
+    class TermIterator {
+        // iterator traits
+        using difference_type = std::ptrdiff_t;
+        using value_type = T;
+        using pointer = const T*;
+        using reference = const T&;
+        using iterator_category = std::forward_iterator_tag;
+
         using This = TermIterator;
         explicit TermIterator(const typename std::forward_list<T>::const_iterator& it_)
             : it(it_)
@@ -83,8 +91,8 @@ public:
         }
         bool operator==(const This& other) const { return it == other.it; }
         bool operator!=(const This& other) const { return it != other.it; }
-        typename std::iterator<std::forward_iterator_tag, const T>::reference operator*() const { return it.operator*(); }
-        typename std::iterator<std::forward_iterator_tag, const T>::pointer operator->() const { return it.operator->(); }
+        reference operator*() const { return it.operator*(); }
+        pointer operator->() const { return it.operator->(); }
 
     private:
         typename std::forward_list<T>::const_iterator it;
