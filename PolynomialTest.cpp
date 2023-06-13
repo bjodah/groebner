@@ -190,7 +190,7 @@ TEST(PolynomialTest, Combine)
 
 TEST(PolynomialTest, Input)
 {
-    typedef Polynomial<> P;
+    using P = Polynomial<>;
     use_abc_var_names in_this_scope;
 
     Term<> a(1, Monomial<>::x(0));
@@ -207,7 +207,7 @@ TEST(PolynomialTest, Input)
 
 TEST(PolynomialTest, Size)
 {
-    typedef Polynomial<> P;
+    using P = Polynomial<>;
     use_abc_var_names in_this_scope;
 
     Term<> a(1, Monomial<>::x(0));

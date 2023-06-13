@@ -14,9 +14,9 @@ using namespace groebner;
 TEST(F5Test, f5)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 4, degrevlex>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, Monomial<char, 4, degrevlex>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     F5Runner<P> runner;
 
     T a = T(1, M::x(0));
@@ -38,9 +38,9 @@ TEST(F5Test, f5)
 TEST(F5Test, hcyclic3_degrevlex)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 4, degrevlex>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, Monomial<char, 4, degrevlex>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     F5Runner<P> runner;
 
     T a = T(1, M::x(0));
@@ -62,9 +62,9 @@ TEST(F5Test, hcyclic3_degrevlex)
 TEST(F5Test, hcyclic3_cached_degrevlex)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, CachedMonomial<Monomial<char, 4, degrevlex>>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, CachedMonomial<Monomial<char, 4, degrevlex>>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     F5Runner<P> runner;
 
     T a = T(1, M::x(0));
@@ -86,9 +86,9 @@ TEST(F5Test, hcyclic3_cached_degrevlex)
 TEST(F5Test, hcyclic3_lex)
 {
     use_abc_var_names in_this_scope;
-    typedef Polynomial<Term<int, Monomial<char, 4, lex>>> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<Term<int, Monomial<char, 4, lex>>>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
     F5Runner<P> runner;
 
     T a = T(1, M::x(0));

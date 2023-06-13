@@ -138,7 +138,7 @@ TEST(MonomialTest, Division)
 
 TEST(MonomialTest, Input)
 {
-    typedef Monomial<> M;
+    using M = Monomial<>;
     use_abc_var_names in_this_scope;
 
     EXPECT_EQ(M::x(0), from_string<M>("a"));

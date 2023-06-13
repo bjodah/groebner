@@ -13,9 +13,9 @@ TEST(FGbTest, FGb)
 {
     use_abc_var_names in_this_scope;
     FGbRunner<char, 4> runner;
-    typedef FGbRunner<char, 4>::P P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = FGbRunner<char, 4>::P;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
 
     T a = T(1, M::x(0));
     T b = T(1, M::x(1));
@@ -36,9 +36,9 @@ TEST(FGbTest, hcyclic3)
 {
     use_abc_var_names in_this_scope;
     FGbRunner<char, 4> runner;
-    typedef FGbRunner<char, 4>::P P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = FGbRunner<char, 4>::P;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
 
     T a = T(1, M::x(0));
     T b = T(1, M::x(1));

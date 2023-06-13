@@ -6,8 +6,8 @@ using namespace groebner;
 
 TEST(TermTest, Multiplication)
 {
-    typedef Term<> T;
-    typedef Monomial<> M;
+    using T = Term<>;
+    using M = Monomial<>;
 
     M X = M::x(0);
     M Y = M::x(1);
@@ -43,8 +43,8 @@ TEST(TermTest, Multiplication)
 
 TEST(TermTest, MultiplicationWithZero)
 {
-    typedef Term<> T;
-    typedef Monomial<> M;
+    using T = Term<>;
+    using M = Monomial<>;
 
     T t;
     EXPECT_EQ(0, t.c());
@@ -70,8 +70,8 @@ TEST(TermTest, Input)
 {
     use_abc_var_names in_this_scope;
 
-    typedef Term<> T;
-    typedef Monomial<> M;
+    using T = Term<>;
+    using M = Monomial<>;
 
     auto a = M::x(0);
     auto b = M::x(1);

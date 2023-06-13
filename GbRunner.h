@@ -45,11 +45,12 @@ struct GbRunner {
         auto p = polynomials.begin();
         while (p != polynomials.end()) {
             if (p->isZero()) {
-                polynomials.erase(p);
+                p = polynomials.erase(p);
                 continue;
             }
-            if (p->lc() < 0)
+            if (p->lc() < 0) {
                 *p = *p * C(-1);
+            }
             ++p;
         }
         DD("polynomials = ", polynomials);

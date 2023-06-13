@@ -11,9 +11,9 @@ TEST(IdealTest, Input)
 {
     get_var_name = var_name;
 
-    typedef Polynomial<> P;
-    typedef typename P::TermType T;
-    typedef typename P::MonomialType M;
+    using P = Polynomial<>;
+    using T = typename P::TermType;
+    using M = typename P::MonomialType;
 
     stringstream ss("a,b,c\na,b*c,a+b+c");
 
