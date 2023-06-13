@@ -380,6 +380,7 @@ public:
         This newMe = *this * other;
         terms.clear();
         *this += newMe;
+        return *this;
     }
     This operator*(const This& other) const
     {

@@ -306,7 +306,7 @@ struct F5Runner : public GbRunner {
         DD("critical pairs = ", Ps);
         while (!Ps.empty()) {
             std::sort(Ps.begin(), Ps.end());
-            uint d = Ps.front().t.degree();
+            const uint d = Ps.front().t.degree();
             D("d = " << d);
             auto d_end = find_if(Ps.begin(), Ps.end(), [d](const CriticalPair& cp) { return cp.t.degree() != d; });
             std::vector<CriticalPair> Pd(Ps.begin(), d_end);
