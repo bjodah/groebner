@@ -1,0 +1,116 @@
+name: Build and test groebner
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.OS }}
+    name: "${{ matrix.BUILD_TYPE }}-${{ matrix.OS }}-${{ matrix.CC }} (${{ toJSON(matrix) }})"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - BUILD_TYPE: Debug
+            USE_GLIBCXX_DEBUG: yes
+            OS: ubuntu-22.04
+            CC: gcc
+            EXTRA_APT_PACKAGES: g++-12 gcc-12
+
+          - BUILD_TYPE: Debug
+            WITH_COVERAGE: yes
+            CC: gcc
+            OS: ubuntu-20.04
+
+
+          # Release build (recent LLVM+clang)
+          - BUILD_TYPE: Release
+            OS: ubuntu-22.04
+            CC: clang
+            EXTRA_APT_REPOSITORY: 'deb http://apt.llvm.org/jammy/ llvm-toolchain-focal-16 main'
+            EXTRA_APT_PACKAGES: clang-16
+
+          - BUILD_TYPE: Debug
+            OS: macos-latest
+            CC: gcc
+
+          - BUILD_TYPE: Release
+            OS: macos-latest
+            CC: gcc
+
+          - BUILD_TYPE: Debug
+            WITH_SANITIZE: address
+            WITH_COTIRE: no
+            CC: clang
+            OS: ubuntu-20.04
+
+          - BUILD_TYPE: Debug
+            WITH_SANITIZE: undefined
+            CC: clang
+            OS: ubuntu-20.04
+
+          - BUILD_TYPE: Debug
+            WITH_SANITIZE: memory
+            WITH_SYMENGINE_RCP: yes
+            WITH_BFD: no
+            WITH_COTIRE: no
+            EXTRA_APT_REPOSITORY: 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main'
+            EXTRA_APT_PACKAGES: clang-16
+            CC: clang
+            OS: ubuntu-22.04
+
+          - MSYSTEM: MINGW64
+            ARCH: x86_64
+            OS: windows-2019
+            BUILD_TYPE: Release
+
+          - MSYSTEM: MINGW64
+            ARCH: x86_64
+            OS: windows-2019
+            BUILD_TYPE: Debug
+    env:
+      USE_GLIBCXX_DEBUG: ${{ matrix.USE_GLIBCXX_DEBUG }}
+      EXTRA_APT_REPOSITORY: ${{ matrix.EXTRA_APT_REPOSITORY }}
+      EXTRA_APT_PACKAGES: ${{ matrix.EXTRA_APT_PACKAGES }}
+      OS: ${{ matrix.OS }}
+      CC: ${{ matrix.CC }}
+      WITH_COVERAGE: ${{ matrix.WITH_COVERAGE }}
+      BUILD_TYPE: ${{ matrix.BUILD_TYPE }}
+      WITH_SANITIZE: ${{ matrix.WITH_SANITIZE }}
+      OPTIONS: ${{ matrix.BUILD_TYPE }}-${{ matrix.OS }}-${{ matrix.CC }}-${{ matrix.USE_GLIBCXX_DEBUG }}-${{ matrix.WITH_COVERAGE }}-${{ matrix.WITH_SANITIZE }}
+      CCACHE_DIR: 'D:\a\_temp\msys\msys64\home\runneradmin\.ccache'
+
+    steps:
+    - name: Setup msys2
+      uses: msys2/setup-msys2@v2
+      if: matrix.MSYSTEM != ''
+      with:
+        msystem: ${{ matrix.MSYSTEM }}
+        update: true
+        install: mingw-w64-${{ matrix.ARCH }}-gcc mingw-w64-${{ matrix.ARCH }}-cmake mingw-w64-${{ matrix.ARCH }}-ccache python make git
+
+    - name: Set ccache dir
+      if: matrix.MSYSTEM == ''
+      run: echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
+
+    - name: Cache ccache
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.CCACHE_DIR }}
+        key: ccache-${{ github.job }}-${{ env.OPTIONS }}-${{ runner.os }}-${{ github.sha }}
+        restore-keys: ccache-${{ github.job }}-${{ env.OPTIONS }}-${{ runner.os }}-
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - name: Build and test symengine
+      shell: msys2 {0}
+      if: matrix.MSYSTEM != ''
+      run: |
+        source bin/test_symengine_unix.sh
+
+    - name: Build and test symengine
+      shell: bash
+      if: matrix.MSYSTEM == ''
+      run: |
+        source bin/test_symengine_unix.sh
