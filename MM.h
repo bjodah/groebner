@@ -74,8 +74,9 @@ private:
     }
     friend void intrusive_ptr_release(const MM::MMData* p)
     {
-        if (--p->refcount == 0)
+        if (--p->refcount == 0) {
             delete p;
+        }
     }
     boost::intrusive_ptr<MMData> mmData;
 };

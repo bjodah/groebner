@@ -101,31 +101,37 @@ public:
     C operator[](const M& m) const
     {
         auto c = terms.begin();
-        while (c != terms.end() && c->m() > m)
+        while (c != terms.end() && c->m() > m) {
             ++c;
-        if (c == terms.end())
+        }
+        if (c == terms.end()) {
             return C();
-        if (c->m() == m)
+        }
+        if (c->m() == m) {
             return c->c();
+        }
         return C();
     }
     bool isZero() const { return terms.empty(); }
     bool isConstant() const { return isZero() || lm().isConstant(); }
     bool isHomogeneous() const
     {
-        if (isZero())
+        if (isZero()) {
             return true;
+        }
         uint degree = lm().degree();
         for (const auto& term : *this) {
-            if (term.degree() != degree)
+            if (term.degree() != degree) {
                 return false;
+            }
         }
         return true;
     }
     This homogenize(const M& x0)
     {
-        if (isZero())
+        if (isZero()) {
             return *this;
+        }
         uint max_deg = 0;
         for (const auto& term : *this) {
             max_deg = std::max(term.degree(), max_deg);
@@ -136,21 +142,24 @@ public:
             if (x0.divides(hterm.m())) {
                 throw std::invalid_argument("homogenize: input term already contains x0");
             }
-            while (hterm.m().degree() < max_deg)
+            while (hterm.m().degree() < max_deg) {
                 hterm *= x0;
+            }
             r += hterm;
         }
         return r;
     }
     This dehomogenize(const M& t)
     {
-        if (isZero())
+        if (isZero()) {
             return *this;
+        }
         This r;
         for (const auto& term : *this) {
             T hterm(term);
-            while (t.divides(hterm.m()))
+            while (t.divides(hterm.m())) {
                 hterm /= t;
+            }
             r += hterm;
         }
         return r;
@@ -181,8 +190,9 @@ public:
     }
     This& operator+=(const T& t)
     {
-        if (t.isZero())
+        if (t.isZero()) {
             return *this;
+        }
         if (terms.empty() || lm() < t.m()) {
             terms.insert_after(terms.before_begin(), t);
             return *this;
@@ -274,19 +284,23 @@ public:
     {
         auto it = terms.begin();
         auto end = terms.end();
-        if (it == end)
+        if (it == end) {
             return;
+        }
         C d = it->c();
-        if (d == C(1))
+        if (d == C(1)) {
             return;
+        }
         ++it;
         while (it != end) {
             C e = it->c();
-            if (e < 0)
+            if (e < 0) {
                 e *= C(-1);
+            }
             d = gcd(d, e);
-            if (d == C(1))
+            if (d == C(1)) {
                 return;
+            }
             ++it;
         }
         it = terms.begin();
@@ -461,8 +475,9 @@ std::ostream& operator<<(std::ostream& out, const Polynomial<T>& p)
         }
         ss << *it;
         termPrinted = true;
-        if (ss.str().length() > max_print_length)
+        if (ss.str().length() > max_print_length) {
             break;
+        }
     }
     if (!termPrinted) {
         ss << "0";
@@ -475,8 +490,9 @@ std::ostream& operator<<(std::ostream& out, const Polynomial<T>& p)
         while (it != end) {
             ++termCount;
             C c = it->c();
-            if (c < 0)
+            if (c < 0) {
                 c *= C(-1);
+            }
             max_abs_coefficient = std::max(max_abs_coefficient, c);
             ++it;
         }
@@ -495,8 +511,9 @@ std::istream& operator>>(std::istream& in, Polynomial<T>& p)
     while (!in.eof() && (std::isalnum(next) || next == '+' || next == '-')) {
         T t;
         in >> t;
-        if (!t.isZero())
+        if (!t.isZero()) {
             p += t;
+        }
         next = in.peek();
     }
     return in;

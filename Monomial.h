@@ -184,8 +184,9 @@ std::ostream& operator<<(std::ostream& out, const Monomial<E, VC, O>& mon)
     out << "{";
     for (uint i = 0; i < Monomial<E, VC, O>::VAR_COUNT; ++i) {
         out << mon[i];
-        if (i < Monomial<E, VC, O>::VAR_COUNT - 1)
+        if (i < Monomial<E, VC, O>::VAR_COUNT - 1) {
             out << " ";
+        }
     }
     out << "}";
     return out;
@@ -198,16 +199,19 @@ inline std::ostream& operator<<(std::ostream& out, const Monomial<char, VC, O>& 
     for (uint i = 0; i < Monomial<char, VC, O>::VAR_COUNT; ++i) {
         int e = (int)mon[i];
         if (e) {
-            if (termPrinted)
+            if (termPrinted) {
                 out << "*";
+            }
             out << (*get_var_name)(i);
-            if (e > 1)
+            if (e > 1) {
                 out << "^" << e;
+            }
             termPrinted = true;
         }
     }
-    if (!termPrinted)
+    if (!termPrinted) {
         out << "1";
+    }
     return out;
 }
 
@@ -263,8 +267,9 @@ std::istream& operator>>(std::istream& in, Monomial<E, VC, O>& m)
                 break;
             }
         }
-        if (!found)
+        if (!found) {
             throw std::invalid_argument(std::string("unknown monomial name: ") + current_monomial_name);
+        }
         auto next = in.peek();
         if (next == '^') {
             in.get();

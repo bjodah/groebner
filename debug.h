@@ -5,7 +5,7 @@
 #include <ctime>
 #include <iostream>
 
-//#define PRINT_LINE_NUMBERS
+// #define PRINT_LINE_NUMBERS
 
 #ifdef PRINT_LINE_NUMBERS
 #define W(statement) std::cerr << now << __func__ << "[" << __LINE__ << "]: " << statement << std::endl;
@@ -41,8 +41,9 @@ void print(const std::string& prefix, const C& container)
     std::cerr << "{";
     uint itemsPrinted = 0;
     for (const auto& item : container) {
-        if (itemsPrinted)
+        if (itemsPrinted) {
             std::cerr << ",";
+        }
         std::cerr << std::endl
                   << prefix << "  " << item;
         ++itemsPrinted;
@@ -53,9 +54,10 @@ void print(const std::string& prefix, const C& container)
             break;
         }
     }
-    if (itemsPrinted)
+    if (itemsPrinted) {
         std::cerr << std::endl
                   << prefix;
+    }
     std::cerr << "}" << std::endl;
 }
 

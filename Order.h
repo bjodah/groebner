@@ -23,8 +23,9 @@ struct degrevlex {
     {
         auto ld = lhs.degree();
         auto rd = rhs.degree();
-        if (ld != rd)
+        if (ld != rd) {
             return ld < rd;
+        }
         for (uint i = 0; i < M::VAR_COUNT; ++i) {
             if (lhs[M::VAR_COUNT - i - 1] != rhs[M::VAR_COUNT - i - 1]) {
                 return lhs[M::VAR_COUNT - i - 1] > rhs[M::VAR_COUNT - i - 1];

@@ -69,8 +69,9 @@ struct F5Runner : public GbRunner {
                     p = P::combineAndRenormalize(p, q.lc(), r, m_tc);
                     D("reduced to = " << p);
                     t = p.begin();
-                    while (t != p.end() && t->m() > level)
+                    while (t != p.end() && t->m() > level) {
                         ++t;
+                    }
                     break;
                 } else {
                     ++i;
@@ -146,14 +147,16 @@ struct F5Runner : public GbRunner {
         auto k1 = Sr1.index;
         P u1t1 = P(C(1), u1 * t1);
         D("u1*t1 = " << u1t1);
-        if (topReducible(u1t1, k1 + 1))
+        if (topReducible(u1t1, k1 + 1)) {
             return boost::optional<CriticalPair>();
+        }
         auto t2 = Sr2.m;
         auto k2 = Sr2.index;
         P u2t2 = P(C(1), u2 * t2);
         D("u2*t2 = " << u2t2);
-        if (topReducible(u2t2, k2 + 1))
+        if (topReducible(u2t2, k2 + 1)) {
             return boost::optional<CriticalPair>();
+        }
         auto cp = CriticalPair(t, u1, k, u2, l);
         D("returning " << cp);
         return boost::make_optional(cp);
@@ -189,15 +192,17 @@ struct F5Runner : public GbRunner {
 
     bool topReducible(const P& p, uint k)
     {
-        if (p.isZero())
+        if (p.isZero()) {
             return false;
+        }
         return topReducible(p.lm(), k);
     }
 
     bool topReducible(const M& m, uint k)
     {
-        if (k >= G.size())
+        if (k >= G.size()) {
             return false;
+        }
 
         for (uint i = 0; i < G[k].size(); ++i) {
             const auto& q = poly(G[k][i]);
@@ -217,16 +222,20 @@ struct F5Runner : public GbRunner {
             auto tt = poly(j).lm();
             auto vj = signature(j).m;
             auto kj = index(j);
-            if (!tt.divides(t))
+            if (!tt.divides(t)) {
                 continue;
+            }
             auto u = tt / t;
             auto uvj = u * vj;
-            if (topReducible(uvj, kj + 1))
+            if (topReducible(uvj, kj + 1)) {
                 continue;
-            if (rewritable(u, j))
+            }
+            if (rewritable(u, j)) {
                 continue;
-            if (u * signature(j) == signature(k))
+            }
+            if (u * signature(j) == signature(k)) {
                 continue;
+            }
             return boost::make_optional(j);
         }
         return boost::optional<uint>();
@@ -279,8 +288,9 @@ struct F5Runner : public GbRunner {
             std::vector<uint> G_i_and_done(G[i]);
             G_i_and_done.insert(G_i_and_done.end(), done.begin(), done.end());
             auto k1_todo1 = TopReduction(k, G_i_and_done);
-            if (k1_todo1.first)
+            if (k1_todo1.first) {
                 done.push_back(*(k1_todo1.first));
+            }
             todo.insert(todo.end(), k1_todo1.second.begin(), k1_todo1.second.end());
         }
         DD("L = ", L);
@@ -297,8 +307,9 @@ struct F5Runner : public GbRunner {
         std::vector<CriticalPair> Ps;
         for (auto j : G[i + 1]) {
             auto cp = CritPair(i, j, i + 1);
-            if (cp)
+            if (cp) {
                 Ps.push_back(*cp);
+            }
         }
         DD("critical pairs = ", Ps);
         while (!Ps.empty()) {
@@ -315,8 +326,9 @@ struct F5Runner : public GbRunner {
             for (auto k : R_d) {
                 for (auto l : G[i]) {
                     auto cp = CritPair(k, l, i + 1);
-                    if (cp)
+                    if (cp) {
                         Ps.push_back(*cp);
+                    }
                 }
                 G[i].push_back(k);
             }
@@ -360,8 +372,9 @@ struct F5Runner : public GbRunner {
         auto m = f.size();
         ResetSimplificationRules(m);
         L = std::vector<R>();
-        for (uint i = 0; i < m; ++i)
+        for (uint i = 0; i < m; ++i) {
             L.push_back(std::make_pair(S(), P()));
+        }
         L.back() = std::make_pair(S::e(m - 1), f.back());
         DD("L = ", L);
         G = std::vector<std::vector<uint>>(m);

@@ -14,8 +14,9 @@ void read_var_names(std::istream& in)
 
 std::string var_name(uint index)
 {
-    if (index < var_names.size())
+    if (index < var_names.size()) {
         return var_names[index];
+    }
     return default_get_var_name(index);
 }
 // vim:ruler:cindent:shiftwidth=2:expandtab:

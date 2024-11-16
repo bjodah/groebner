@@ -76,8 +76,9 @@ struct FGbRunner {
         DD("input = ", input);
         Dpol input_basis[input.size()];
         size_t max_mon = 0;
-        for (const auto& p : input)
+        for (const auto& p : input) {
             max_mon = std::max(max_mon, p.size());
+        }
         for (typename std::vector<P>::size_type i = 0; i < input.size(); ++i) {
             I32 exp[max_mon][M::VAR_COUNT];
             for (uint j = 0; j < max_mon; ++j) {
@@ -88,8 +89,9 @@ struct FGbRunner {
             input_basis[i] = FGB(creat_poly)(input[i].size());
             uint j = 0;
             for (const auto& term : input[i]) {
-                for (uint k = 0; k < M::VAR_COUNT; ++k)
+                for (uint k = 0; k < M::VAR_COUNT; ++k) {
                     exp[j][k] = term.m()[k];
+                }
                 FGB(set_expos2)
                 (input_basis[i], j, exp[j], M::VAR_COUNT);
                 FGB(set_coeff_gmp)

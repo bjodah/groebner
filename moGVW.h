@@ -49,8 +49,9 @@ struct moGVWRunner : public GbRunner {
     {
         auto lmf = uf.f().lm();
         auto nvg = GG.find(m);
-        if (nvg == GG.end())
+        if (nvg == GG.end()) {
             return false;
+        }
         auto lmg = nvg->second.f().lm();
         if (m == lcm(lmf, lmg)) {
             return false;
@@ -67,8 +68,9 @@ struct moGVWRunner : public GbRunner {
         auto lmu = uf.u();
         auto t_f = m / uf.f().lm();
         auto nvg = GG.find(t_f * lmu.m);
-        if (nvg == GG.end())
+        if (nvg == GG.end()) {
             return false;
+        }
         auto lmv = nvg->second.u();
         if (lmu.index > lmv.index) {
             D("rejecting (" << m << ", " << uf << ") because " << *nvg << " has smaller index");
@@ -83,8 +85,9 @@ struct moGVWRunner : public GbRunner {
         auto lmf = uf.f().lm();
         for (auto nvg = GG.begin(); nvg != GG.end(); ++nvg) {
             auto lmv = nvg->second.u();
-            if (!lmv.divides(lmu))
+            if (!lmv.divides(lmu)) {
                 continue;
+            }
             auto t = lmu / lmv;
             if (t * nvg->second.f().lm() < lmf) {
                 D("rejecting " << uf);
@@ -220,8 +223,9 @@ struct moGVWRunner : public GbRunner {
         {
             out << "[" << m.rows.size() << "x" << m.monomials.size() << "]";
 #ifdef DEBUG
-            if (m.monomials.size() > 30)
+            if (m.monomials.size() > 30) {
                 return out;
+            }
             out << std::endl;
             for (const auto& monomial : m.monomials) {
                 out << "\t" << monomial;
@@ -231,8 +235,9 @@ struct moGVWRunner : public GbRunner {
                 for (const auto& monomial : m.monomials) {
                     auto c = row.f()[monomial];
                     out << "\t";
-                    if (c != C())
+                    if (c != C()) {
                         out << c;
+                    }
                 }
                 out << "\t" << row.uf.u();
             }
@@ -254,15 +259,18 @@ struct moGVWRunner : public GbRunner {
         result_type operator()(const point_t& p) const
         {
             auto monomial = monomials.begin();
-            for (uint i = 0; i < p.x; ++i)
+            for (uint i = 0; i < p.x; ++i) {
                 ++monomial;
+            }
             value_type result;
             if (rows[p.y].f()[*monomial] == C(0)) {
-                for (int k = 0; k < num_channels<value_type>::value; ++k)
+                for (int k = 0; k < num_channels<value_type>::value; ++k) {
                     result[k] = (typename channel_type<value_type>::type)(0);
+                }
             } else {
-                for (int k = 0; k < num_channels<value_type>::value; ++k)
+                for (int k = 0; k < num_channels<value_type>::value; ++k) {
                     result[k] = (typename channel_type<value_type>::type)(255);
+                }
             }
             return result;
         }
@@ -271,8 +279,9 @@ struct moGVWRunner : public GbRunner {
         void save(const std::string& filename)
         {
 #ifdef PNG_OUTPUT
-            if (rows.size() == 0 || monomials.size() == 0)
+            if (rows.size() == 0 || monomials.size() == 0) {
                 return;
+            }
 
             typedef virtual_2d_locator<PolynomialMatrix, false> locator_t;
             typedef image_view<locator_t> my_virt_view_t;
@@ -328,8 +337,9 @@ struct moGVWRunner : public GbRunner {
             auto j = pivot_rows[i];
             for (++j; j != end; ++j) {
                 const P& g = j->f();
-                if (g.lm() != pivot_columns[i])
+                if (g.lm() != pivot_columns[i]) {
                     continue;
+                }
                 C gc = g.lc();
                 gc *= -1;
 
@@ -355,8 +365,9 @@ struct moGVWRunner : public GbRunner {
 
         MMSet PP;
         for (const auto& row : m.rows) {
-            if (!row.f().isZero())
+            if (!row.f().isZero()) {
                 PP.insert(row.uf);
+            }
         }
         DD("returning PP = ", PP);
         return PP;
@@ -387,21 +398,25 @@ struct moGVWRunner : public GbRunner {
 
             auto i = begin;
 
-            while (i != end && (i->done || i->f().lm() != monomial))
+            while (i != end && (i->done || i->f().lm() != monomial)) {
                 ++i;
-            if (i == end)
+            }
+            if (i == end) {
                 continue;
+            }
 
             const P& f = i->f();
             const C fc = f.lc();
 
             auto j = i;
             for (++j; j != end; ++j) {
-                if (j->done)
+                if (j->done) {
                     continue;
+                }
                 const P& g = j->f();
-                if (g.lm() != monomial)
+                if (g.lm() != monomial) {
                     continue;
+                }
                 C gc = g.lc();
                 gc *= -1;
 
@@ -416,8 +431,9 @@ struct moGVWRunner : public GbRunner {
 
         MMSet PP;
         for (const auto& row : m.rows) {
-            if (!row.f().isZero())
+            if (!row.f().isZero()) {
                 PP.insert(row.uf);
+            }
         }
         DD("returning PP = ", PP);
         return PP;
@@ -426,8 +442,9 @@ struct moGVWRunner : public GbRunner {
     void update(const MMSet& PP, LMSet& GG)
     {
         for (const auto& wh : PP) {
-            if (wh.f().isZero())
+            if (wh.f().isZero()) {
                 continue;
+            }
             auto m = wh.f().lm();
             D("looking for lm(h) = " << m);
             auto mvg = GG.find(m);
@@ -465,8 +482,9 @@ struct moGVWRunner : public GbRunner {
             }
         }
         for (uint i = 0; i < M::VAR_COUNT; ++i) {
-            if (m[i] > 0)
+            if (m[i] > 0) {
                 max_var = i;
+            }
         }
 
         LMSet GG;

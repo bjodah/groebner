@@ -124,14 +124,18 @@ Term<C, M> pow(const Term<C, M>& base, uint exp)
 template <class C, class M>
 std::ostream& operator<<(std::ostream& out, const Term<C, M>& t)
 {
-    if (t.c() == 0)
+    if (t.c() == 0) {
         return out << "0";
-    if (t.c() == 1)
+    }
+    if (t.c() == 1) {
         return out << t.m();
-    if (t.c() == -1)
+    }
+    if (t.c() == -1) {
         return out << "-" << t.m();
-    if (t.m() == M())
+    }
+    if (t.m() == M()) {
         return out << t.c();
+    }
     return out << t.c() << "*" << t.m();
 }
 
@@ -157,8 +161,9 @@ std::istream& operator>>(std::istream& in, Term<C, M>& t)
     }
 
     // apply sign
-    if (!is_positive)
+    if (!is_positive) {
         coefficient *= C(-1);
+    }
 
     // drop '*'
     if (next == '*') {

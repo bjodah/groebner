@@ -44,25 +44,29 @@ public:
     {
         uint i = index;
         uint j = other.index;
-        if (i > j)
+        if (i > j) {
             return true;
-        if (i == j && m < other.m)
+        }
+        if (i == j && m < other.m) {
             return true;
+        }
         return false;
     }
     bool operator>(const This& other) const { return other < *this; }
 
     bool divides(const This& other) const
     {
-        if (index != other.index)
+        if (index != other.index) {
             return false;
+        }
         return m.divides(other.m);
     }
 
     MonomialType operator/(const This& other) const
     {
-        if (!other.divides(*this))
+        if (!other.divides(*this)) {
             throw std::domain_error("does not divide");
+        }
         return m / other.m;
     }
 
@@ -112,8 +116,9 @@ Signature<P> operator*(const typename P::TermType& a, const Signature<P>& b)
 template <class P>
 std::ostream& operator<<(std::ostream& out, const Signature<P>& u)
 {
-    if (!u.m.isConstant())
+    if (!u.m.isConstant()) {
         out << u.m << "*";
+    }
     return out << "e_" << u.index;
 }
 
