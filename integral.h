@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-#include <mpirxx.h>
+#include <gmpxx.h>
 #include <flint/fmpz.h>
 #include <flint/fmpzxx.h>
 

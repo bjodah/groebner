@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <mpirxx.h>
+#include <gmpxx.h>
 #include <flint/fmpzxx.h>
 
 #include "F5.h"
