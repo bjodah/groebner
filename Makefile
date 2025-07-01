@@ -1,25 +1,22 @@
 BUILDDIR := $(shell pwd)
-CC := $(shell echo gcc)
-CXX := $(shell echo g++)
+CC ?= $(shell which gcc)
+CXX ?= $(shell which g++)
 GTEST_VERSION := 1.17.0
 GTEST := googletest-$(GTEST_VERSION)
-FLINT_VERSION := 3.3.1
+FLINT_VERSION := 2.9.0
 # note that flint v3+ no longer supports MPIR
 FLINT := flint-$(FLINT_VERSION)
-FLINT_URL := "https://github.com/flintlib/flint/releases/download/v$(FLINT_VERSION)/$(FLINT).tar.gz"
-FLINT_SHA256_TGZ := 64d70e513076cfa971e0410b58c1da5d35112913e9a56b44e2c681b459d3eafb
+FLINT_URL := "https://github.com/flintlib/flint/archive/refs/tags/v$(FLINT_VERSION).tar.gz"
+FLINT_SHA256_TGZ := 624e0fc343b27a156c0e3bb48d2a644a1ac387aa66217f6753c03a02c80bbf6f
 #MPIR := mpir-3.0.0
 MPFR := mpfr-4.2.2
 PNG := libpng-1.6.49
 
-FGB_LIBDIR := $(BUILDDIR)/call_FGb/nv/maple/C/$(shell uname | grep Linux >/dev/null && echo x64 || echo macosx)
 CXXFLAGS := -std=c++17 -m64 -O3 -Wall
 LDFLAGS := -L$(BUILDDIR)/lib -lflint -lmpfr -lgmp $(shell $(CC) -v 2>&1 | grep gcc >/dev/null && echo -fopenmp) -pthread -lpng -lz
-FGB_LDFLAGS := -L$(FGB_LIBDIR) $(shell uname | grep Linux >/dev/null && echo -Wl,-allow-multiple-definition) -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm
 CPPFLAGS := -I$(BUILDDIR)/include -I$(BUILDDIR)/include/flint -DINFO
-FGB_CPPFLAGS := -I$(BUILDDIR)/call_FGb/nv/protocol -I$(BUILDDIR)/call_FGb/nv/int -I$(BUILDDIR)/call_FGb/nv/maple/C -Wno-write-strings -Wno-unused-but-set-variable -Wno-unused-function
 
-all: moGVW F5 FGb interreduce intercept.so test
+all: moGVW F5 interreduce intercept.so test  # FGb
 
 moGVW: moGVW.o Monomial.o Ideal.o Polynomial.o debug.o integral.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
@@ -28,10 +25,10 @@ moGVW.o: moGVW.cpp *.h include/flint/fmpz.h include/png.h lib/libpng.a  # includ
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 clean:
-	rm -rf moGVW *.o *.dSYM test-runner FGb F5 gmon.out
+	rm -rf moGVW *.o *.dSYM test-runner F5 gmon.out  # FGb
 
 distclean: clean
-	rm -rf include lib share bin $(MPIR) $(MPFR) $(FLINT) $(GTEST) $(PNG) call_FGb
+	rm -rf include lib share bin $(MPIR) $(MPFR) $(FLINT) $(GTEST) $(PNG) # call_FGb
 
 #.downloads/$(MPIR).tar.bz2:
 #	mkdir -p .downloads && cd .downloads && wget --continue	https://web.archive.org/web/20220204054313/http://mpir.org/$(MPIR).tar.bz2
@@ -52,7 +49,7 @@ lib/libmpfr.a include/mpfr.h: $(MPFR) # lib/libgmp.a
 	cd $< && CC="$(CC)" ./configure --disable-shared --with-gmp=$(BUILDDIR) --prefix=$(BUILDDIR) && make && make check && make install
 
 .downloads/$(FLINT).tar.gz:
-	mkdir -p .downloads && cd .downloads && wget --no-check-certificate "$(FLINT_URL)" && echo "$(FLINT_SHA256_TGZ)  $(FLINT).tar.gz" | sha256sum -c -
+	mkdir -p .downloads && cd .downloads && curl -Lso $(FLINT).tar.gz "$(FLINT_URL)" && echo "$(FLINT_SHA256_TGZ)  $(FLINT).tar.gz" | sha256sum -c -
 
 $(FLINT): .downloads/$(FLINT).tar.gz
 	tar zxf $<
@@ -64,11 +61,12 @@ lib/libflint.a include/flint/flint.h include/flint/fmpz.h include/flint/fmpzxx.h
 	make install
 #--with-mpir=$(BUILDDIR) --with-gmp=$(BUILDDIR)
 
-.downloads/call_FGb6.maclinux.x64.tar.gz:
-	mkdir -p .downloads && cd .downloads && wget --continue http://www-polsys.lip6.fr/~jcf/FGb/C/@downloads/call_FGb6.maclinux.x64.tar.gz
+# The URL below is now dead (404)
+# .downloads/call_FGb6.maclinux.x64.tar.gz:
+# 	mkdir -p .downloads && cd .downloads && wget --continue http://www-polsys.lip6.fr/~jcf/FGb/C/@downloads/call_FGb6.maclinux.x64.tar.gz
 
-call_FGb: .downloads/call_FGb6.maclinux.x64.tar.gz
-	test -e $@ || tar zxf $<
+# call_FGb: .downloads/call_FGb6.maclinux.x64.tar.gz
+# 	test -e $@ || tar zxf $<
 
 .downloads/v$(GTEST_VERSION).zip:
 	mkdir -p .downloads && cd .downloads && wget --continue https://github.com/google/googletest/archive/refs/tags/v$(GTEST_VERSION).zip
@@ -83,7 +81,7 @@ $(PNG): .downloads/$(PNG).tar.gz
 	test -e $@ || tar zxf $<
 
 lib/libpng.a include/png.h: $(PNG)
-	cd $(PNG) && CC=$(CC) ./configure --prefix=$(BUILDDIR) --disable-shared && make && make install
+	cd $(PNG) && CC="$(CC)" ./configure --prefix=$(BUILDDIR) --disable-shared && make && make install
 
 libs: lib/libflint.a lib/libpng.a  # lib/libmpir.a
 
@@ -94,24 +92,18 @@ test: test-runner
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -isystem $(GTEST)/include -o $@ $<
 
 lib/libgtest.a lib/libgtest_main.a include/gtest/gtest.h: $(GTEST)
-	mkdir -p $(GTEST)/build && cd $(GTEST)/build && cmake .. -DBUILD_GMOCK=OFF --install-prefix=/groebner/ && make && make install
+	mkdir -p $(GTEST)/build && \
+        cmake -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=$(BUILDDIR) -S $(GTEST) -B $(GTEST)/build && \
+	cmake --build $(GTEST)/build && \
+	cmake --install $(GTEST)/build
 
 TEST_OBJECTS := $(shell ls *Test.cpp | sed -e s/cpp$$/o/g)
 
 test-runner: $(TEST_OBJECTS) lib/libgtest.a lib/libgtest_main.a Monomial.o Ideal.o Polynomial.o debug.o integral.o
-	$(CXX) $^ -o test-runner $(LDFLAGS) $(FGB_LDFLAGS)
+	$(CXX) $^ -o test-runner $(LDFLAGS) # $(FGB_LDFLAGS)
 
 %.o: %.cpp %.h lib/libpng.a
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
-
-FGb.o: FGb.cpp FGb.h Monomial.h Polynomial.h call_FGb lib/libpng.a
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(FGB_CPPFLAGS) -c -o $@ $<
-
-FGbTest.o: FGbTest.cpp FGb.h Monomial.h Polynomial.h call_FGb lib/libpng.a
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(FGB_CPPFLAGS) -c -o $@ $< -isystem $(GTEST)/include
-
-FGb: FGb.o Monomial.o Ideal.o Polynomial.o debug.o integral.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) $(FGB_LDFLAGS)
 
 F5: F5.o Monomial.o Ideal.o Polynomial.o debug.o integral.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)

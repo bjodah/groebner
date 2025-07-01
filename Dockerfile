@@ -7,7 +7,8 @@ RUN apt-get update \
         apt-transport-https \
         bzip2 \
         ca-certificates \
-        curl \
+        ccache \
+        cmake \
         curl \
         ffmpeg \
         g++ \

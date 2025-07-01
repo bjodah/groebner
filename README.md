@@ -26,6 +26,13 @@ docker run -it --rm -v $(pwd):/groebner /bin/bash
 make
 ```
 
+if you want to cache object files in a robust manner, you may want to leverage `ccache`:
+
+```console
+env CC="ccache gcc" CXX="ccache g++" docker run --rm -v $(pwd):/groebner -v ~/.ccache:/root/.ccache -it groebner /bin/bash
+make
+```
+
 ## Mac OS X
 
 Currently, groebner only compiles with gcc, so install that first. 

@@ -7,21 +7,21 @@
 #include <flint/fmpz.h>
 #include <flint/fmpzxx.h>
 
-template<class T>
-T gcd(T m, T n) {
-  if (m < 0) return gcd(-m, n);
-  if (n < 0) return gcd(m, -n);
-  if (m == 0) return n;
-  while (m != n) {
-    if (m < n) {
-      std::swap(m, n);
-    }
-    m -= n;
-  }
-  return m;
-}
+// template<class T>
+// T gcd(T m, T n) {
+//   if (m < 0) return gcd(-m, n);
+//   if (n < 0) return gcd(m, -n);
+//   if (m == 0) return n;
+//   while (m != n) {
+//     if (m < n) {
+//       std::swap(m, n);
+//     }
+//     m -= n;
+//   }
+//   return m;
+// }
 
-template<>
+//template<>
 inline long gcd(long m, long n) {
   if (m == 0 || n == 0) return 0;
   while (1) {
@@ -32,14 +32,15 @@ inline long gcd(long m, long n) {
   }
 }
 
-template<>
-inline mpz_class gcd(mpz_class m, mpz_class n) {
-  mpz_class result;
-  mpz_gcd(result.get_mpz_t(), m.get_mpz_t(), n.get_mpz_t());
-  return result;
-}
+// already provided by gmpxx.h:
+// template<>
+// inline mpz_class gcd(mpz_class m, mpz_class n) {
+//   mpz_class result;
+//   mpz_gcd(result.get_mpz_t(), m.get_mpz_t(), n.get_mpz_t());
+//   return result;
+// }
 
-template<>
+//template<>
 inline flint::fmpzxx gcd(flint::fmpzxx m, flint::fmpzxx n) {
   flint::fmpzxx result;
   fmpz_gcd(result._fmpz(), m._fmpz(), n._fmpz());
