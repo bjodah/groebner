@@ -12,7 +12,7 @@ FLINT_SHA256_TGZ := 624e0fc343b27a156c0e3bb48d2a644a1ac387aa66217f6753c03a02c80b
 MPFR := mpfr-4.2.2
 PNG := libpng-1.6.49
 
-CXXFLAGS := -std=c++17 -m64 -O3 -Wall
+CXXFLAGS := -std=c++20 -m64 -O3 -Wall -Wextra
 LDFLAGS := -L$(BUILDDIR)/lib -lflint -lmpfr -lgmp $(shell $(CC) -v 2>&1 | grep gcc >/dev/null && echo -fopenmp) -pthread -lpng -lz
 CPPFLAGS := -I$(BUILDDIR)/include -I$(BUILDDIR)/include/flint -DINFO
 
