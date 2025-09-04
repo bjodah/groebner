@@ -32,6 +32,11 @@ if you want to cache object files in a robust manner, you may want to leverage `
 env CC="ccache gcc" CXX="ccache g++" docker run --rm -v $(pwd):/groebner -v ~/.ccache:/root/.ccache -it groebner /bin/bash
 make
 ```
+re-running failing tests in the edit/compile/run-cycle can be done e.g. using:
+```console
+make test-runner && ./test-runner --gtest_filter=F5Test.f5
+```
+to list the names of all tests, cf. `./test-runner --gtest_list_tests`
 
 ## Mac OS X
 

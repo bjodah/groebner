@@ -96,6 +96,8 @@ lib/libgtest.a lib/libgtest_main.a include/gtest/gtest.h: $(GTEST)
         cmake -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=$(BUILDDIR) -S $(GTEST) -B $(GTEST)/build && \
 	cmake --build $(GTEST)/build && \
 	cmake --install $(GTEST)/build
+	touch -r include/gtest/gtest.h googletest-1.17.0
+	touch -r include/gtest/gtest.h .downloads/v$(GTEST_VERSION).zip
 
 TEST_OBJECTS := $(shell ls *Test.cpp | sed -e s/cpp$$/o/g)
 

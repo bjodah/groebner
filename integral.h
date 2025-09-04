@@ -23,7 +23,11 @@
 
 //template<>
 inline long gcd(long m, long n) {
-  if (m == 0 || n == 0) return 0;
+    //if (m == 0 || n == 0) return 0;
+  if (m < 0) return gcd(-m, n);
+  if (n < 0) return gcd(m, -n);
+  if (m == 0) return n;
+
   while (1) {
     m = m % n;
     if (m == 0) return n;
@@ -40,12 +44,12 @@ inline long gcd(long m, long n) {
 //   return result;
 // }
 
-//template<>
-inline flint::fmpzxx gcd(flint::fmpzxx m, flint::fmpzxx n) {
-  flint::fmpzxx result;
-  fmpz_gcd(result._fmpz(), m._fmpz(), n._fmpz());
-  return result;
-}
+// template<>
+// inline flint::fmpzxx gcd(flint::fmpzxx m, flint::fmpzxx n) {
+//   flint::fmpzxx result;
+//   fmpz_gcd(result._fmpz(), m._fmpz(), n._fmpz());
+//   return result;
+// }
 
 template<class C>
 typename C::value_type gcd(const C& c) {
