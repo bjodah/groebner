@@ -29,7 +29,7 @@ make
 if you want to cache object files in a robust manner, you may want to leverage `ccache`:
 
 ```console
-env CC="ccache gcc" CXX="ccache g++" docker run --rm -v $(pwd):/groebner -v ~/.ccache:/root/.ccache -it groebner /bin/bash
+env CC="ccache gcc" CXX="ccache g++" docker run --rm -v $(pwd):/groebner -v ~/.ccache:/root/.ccache -e CC -e CXX -it groebner /bin/bash
 make
 ```
 re-running failing tests in the edit/compile/run-cycle can be done e.g. using:
